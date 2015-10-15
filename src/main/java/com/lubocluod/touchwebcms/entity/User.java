@@ -1,4 +1,4 @@
-package com.lubocluod.touchwebcms.domain;
+package com.lubocluod.touchwebcms.entity;
 
 public class User {
 	private String username;

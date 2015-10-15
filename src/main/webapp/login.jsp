@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.lubocluod.touchwebcms.domain.User" %>
+<%@ page import="com.lubocluod.touchwebcms.entity.User" %>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl" %>
     <% 
     User user = (User)session.getAttribute("user");

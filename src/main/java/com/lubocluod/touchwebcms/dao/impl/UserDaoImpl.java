@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.lubocluod.touchwebcms.dao.DataConnection;
 import com.lubocluod.touchwebcms.dao.UserDao;
-import com.lubocluod.touchwebcms.domain.User;
+import com.lubocluod.touchwebcms.entity.User;
 
 public class UserDaoImpl implements UserDao {
 

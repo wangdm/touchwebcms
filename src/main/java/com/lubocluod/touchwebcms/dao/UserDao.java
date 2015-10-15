@@ -2,7 +2,7 @@ package com.lubocluod.touchwebcms.dao;
 
 import java.util.List;
 
-import com.lubocluod.touchwebcms.domain.User;
+import com.lubocluod.touchwebcms.entity.User;
 
 public interface UserDao {
 	public boolean add(User u);
