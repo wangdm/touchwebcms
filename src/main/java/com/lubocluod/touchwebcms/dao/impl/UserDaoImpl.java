@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.lubocluod.touchwebcms.dao.DataConnection;
@@ -84,7 +85,27 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
+        String sql = "SELECT username,role,fullname,email,phone FROM user";  
+        try {
+			stat = conn.prepareStatement(sql);
+	        ResultSet rs = stat.executeQuery();  
+			List<User> list = new ArrayList<User>();
+	        User u = null;  
+	        while(rs.next()){  
+	            u = new User(); 
+	            u.setUsername(rs.getString(1));
+	            u.setRoletype(rs.getInt(2));
+	            u.setFullname(rs.getString(3));
+	            u.setEmail(rs.getString(4));
+	            u.setPhone(rs.getString(5));
+	            list.add(u);
+	        }  
+	        return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return null;
 	}
 
