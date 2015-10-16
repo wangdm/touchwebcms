@@ -81,7 +81,7 @@
         </div>
         <div class="form-group">
           <div class="col-sm-4">
-            <button type="submit" class="btn btn-default col-sm-12">Register</button>
+            <button type="submit" class="btn btn-success col-sm-12">Register</button>
           </div>
           <div class="col-sm-8 register">
             Already have an account? <a href="login.jsp">Login</a>
