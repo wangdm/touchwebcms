@@ -3,9 +3,14 @@
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%
+    String fromurl = request.getParameter("from");
+    if(fromurl==null)
+    {
+     fromurl = "index.jsp"; 
+    }
 	User user = (User) session.getAttribute("user");
 	if (null != user) {
-		response.sendRedirect("index.jsp");
+        response.sendRedirect(fromurl);
 	}
 
 	String username = request.getParameter("username");
@@ -15,7 +20,7 @@
 		user = userservice.find(username);
 		if (null != user && user.getPasswd().equals(passwd)) {
 			session.setAttribute("user", user);
-			response.sendRedirect("index.jsp");
+			response.sendRedirect(fromurl);
 		}
 	}
 %>
@@ -43,6 +48,7 @@
       action="login.jsp" method="post">
       <fieldset class="col-sm-4">
         <legend>Sign in</legend>
+            <input type="hidden"  name="from" value="<%=fromurl%>">
         <div class="form-group">
           <div class="col-sm-12">
             <input type="text" name="username" class="form-control"

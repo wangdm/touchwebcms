@@ -4,11 +4,20 @@
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%!User user = null;%>
+<%!String username = "sssss";%>
 <%
+    String url = request.getScheme()+"://"+ request.getServerName()+":"+request.getServerPort()+request.getRequestURI();
+    String query = request.getQueryString();
+    if(query != null)
+    {
+    	   url += "?" + query; 
+    }
 	user = (User) session.getAttribute("user");
 	if (null == user) {
-		response.sendRedirect("login.jsp");
-	}
+		response.sendRedirect("login.jsp?from="+url);
+	}else{
+        username = user.getFullname();
+    }
 %>
 <!DOCTYPE HTML>
 <html>
@@ -31,7 +40,7 @@
       <div style="line-height: 30px;">
         <a style="float: right;" href="logout.jsp">Logout</a>
         <div style="float: right;">&nbsp;|&nbsp;</div>
-        <a style="float: right;" href="member.jsp"><%=user.getUsername()%></a>
+        <a style="float: right;" href="member.jsp"><%=username%></a>
       </div>
     </div>
   </nav>
@@ -68,31 +77,15 @@
         	for (int i = 0; i < userlist.size(); i++) {
         			User u = userlist.get(i);
         			out.println("<tr>");
-        			out.print("<td>");
-        			out.print(i);
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print(u.getUsername());
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print(u.getRoletype());
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print(u.getFullname());
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print(u.getEmail());
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print(u.getPhone());
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print("<button type=\"button\" class=\"btn btn-danger btn-xs\">Delete</button>");
-        			out.println("</td>");
-        			out.print("<td>");
-        			out.print("<button type=\"button\" class=\"btn btn-info btn-xs\">Profile</button>");
-        			out.println("</td>");
-        			out.println("<tr>");
+        			out.println("<td>"+i+"</td>");
+        			out.println("<td>"+u.getUsername()+"</td>");
+        			out.println("<td>"+u.getRoletype()+"</td>");
+        			out.println("<td>"+u.getFullname()+"</td>");
+        			out.println("<td>"+u.getEmail()+"</td>");
+        			out.println("<td>"+u.getPhone()+"</td>");
+        			out.println("<td><button type=\"button\" value=\""+u.getId()+"\"class=\"deleteuser btn btn-danger btn-xs\">Delete</button></td>");
+        			out.println("<td><button type=\"button\" value=\""+u.getId()+"\"class=\"userprofile btn btn-info btn-xs\">Profile</button></td>");
+        			out.println("</tr>");
         		}
         %>
       </tbody>
@@ -101,5 +94,15 @@
     	}
     %>
   </div>
+  <script>
+  $(".deleteuser").on("click",function(){
+	  $.ajax({
+		  "url": "<%=application.getContextPath()%>/usermanager?op=del&userid="+this.value,
+		  "type": "get",
+	  }).fail(function(){
+		  alert("111111111");
+	  });
+  });
+  </script>
 </body>
 </html>
