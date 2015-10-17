@@ -14,24 +14,24 @@ import com.lubocluod.touchwebcms.entity.User;
 public class UserDaoImpl implements UserDao {
 
 	private Connection conn;
-    private PreparedStatement stat = null;
-	
-	public UserDaoImpl(){
+	private PreparedStatement stat = null;
+
+	public UserDaoImpl() {
 		try {
 			this.conn = DataConnection.getConnection();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public boolean add(User u) {
 		// TODO Auto-generated method stub
-        String sql = "INSERT INTO user(username,password,fullname,email,phone) VALUES(?,?,?,?,?)";  
-        try {
+		String sql = "INSERT INTO user(username,password,fullname,email,phone) VALUES(?,?,?,?,?)";
+		try {
 			stat = conn.prepareStatement(sql);
 			stat.setString(1, u.getUsername());
 			stat.setString(2, u.getPasswd());
@@ -42,70 +42,119 @@ public class UserDaoImpl implements UserDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		}
 		return false;
 	}
 
 	@Override
-	public boolean delete(User u) {
+	public boolean delete(int id) {
 		// TODO Auto-generated method stub
+		String sql = "DELETE FROM user WHERE Id=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setInt(1, id);
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean update(User u) {
 		// TODO Auto-generated method stub
+		String sql = "UPDATE user SET fullname=?,email=?,phone=? WHERE Id=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setString(1, u.getFullname());
+			stat.setString(2, u.getEmail());
+			stat.setString(3, u.getPhone());
+			stat.setInt(4, u.getId());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public User find(String username) {
-		// TODO Auto-generated method stub 
-        String sql = "SELECT password,fullname,email,phone FROM user WHERE username=?";  
-        try {
+		// TODO Auto-generated method stub
+		String sql = "SELECT Id,password,fullname,email,phone FROM user WHERE username=?";
+		try {
 			stat = conn.prepareStatement(sql);
-	        stat.setString(1,username);  
-	        ResultSet rs = stat.executeQuery();  
-	        User u = null;  
-	        if(rs.next()){  
-	            u = new User(); 
-	            u.setUsername(username);
-	            u.setPasswd(rs.getString(1));
-	            u.setFullname(rs.getString(2));
-	            u.setEmail(rs.getString(3));
-	            u.setPhone(rs.getString(4));
-	        }  
-	        return u;
+			stat.setString(1, username);
+			ResultSet rs = stat.executeQuery();
+			User u = null;
+			if (rs.next()) {
+				u = new User();
+				u.setId(rs.getInt(1));
+				u.setUsername(username);
+				u.setPasswd(rs.getString(2));
+				u.setFullname(rs.getString(3));
+				u.setEmail(rs.getString(4));
+				u.setPhone(rs.getString(5));
+			}
+			return u;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-        return null;
+		}
+		return null;
+	}
+
+	@Override
+	public User find(int id) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT username,password,fullname,email,phone FROM user WHERE Id=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setInt(1, id);
+			ResultSet rs = stat.executeQuery();
+			User u = null;
+			if (rs.next()) {
+				u = new User();
+				u.setId(id);
+				u.setUsername(rs.getString(1));
+				u.setPasswd(rs.getString(2));
+				u.setFullname(rs.getString(3));
+				u.setEmail(rs.getString(4));
+				u.setPhone(rs.getString(5));
+			}
+			return u;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub 
-        String sql = "SELECT username,role,fullname,email,phone FROM user";  
-        try {
+		// TODO Auto-generated method stub
+		String sql = "SELECT Id,username,role,fullname,email,phone FROM user";
+		try {
 			stat = conn.prepareStatement(sql);
-	        ResultSet rs = stat.executeQuery();  
+			ResultSet rs = stat.executeQuery();
 			List<User> list = new ArrayList<User>();
-	        User u = null;  
-	        while(rs.next()){  
-	            u = new User(); 
-	            u.setUsername(rs.getString(1));
-	            u.setRoletype(rs.getInt(2));
-	            u.setFullname(rs.getString(3));
-	            u.setEmail(rs.getString(4));
-	            u.setPhone(rs.getString(5));
-	            list.add(u);
-	        }  
-	        return list;
+			User u = null;
+			while (rs.next()) {
+				u = new User();
+				u.setId(rs.getInt(1));
+				u.setUsername(rs.getString(2));
+				u.setRoletype(rs.getInt(3));
+				u.setFullname(rs.getString(4));
+				u.setEmail(rs.getString(5));
+				u.setPhone(rs.getString(6));
+				list.add(u);
+			}
+			return list;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return null;
 	}
 

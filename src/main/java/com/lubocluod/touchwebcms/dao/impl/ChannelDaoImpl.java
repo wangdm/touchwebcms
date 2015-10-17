@@ -14,7 +14,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
-	public boolean delete(Channel u) {
+	public boolean delete(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -26,7 +26,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
-	public Channel find(String username) {
+	public Channel find(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

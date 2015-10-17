@@ -10,71 +10,139 @@ import java.util.List;
 import com.lubocluod.touchwebcms.dao.DataConnection;
 import com.lubocluod.touchwebcms.dao.RoleDao;
 import com.lubocluod.touchwebcms.entity.Role;
-import com.lubocluod.touchwebcms.entity.User;
 
 public class RoleDaoImpl implements RoleDao {
 
 	private Connection conn;
-    private PreparedStatement stat = null;
-	
-	public RoleDaoImpl(){
+	private PreparedStatement stat = null;
+
+	public RoleDaoImpl() {
 		try {
 			this.conn = DataConnection.getConnection();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	public boolean add(Role u) {
+	public boolean add(Role r) {
 		// TODO Auto-generated method stub
+		String sql = "INSERT INTO role(title,type) VALUES(?,?)";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setString(1, r.getTitle());
+			stat.setInt(2, r.getType());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
-	public boolean delete(Role u) {
+	public boolean delete(int id) {
 		// TODO Auto-generated method stub
+		String sql = "DELETE FROM role where id=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setInt(1, id);
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
-	public boolean update(Role u) {
+	public boolean update(Role r) {
 		// TODO Auto-generated method stub
+		String sql = "UPDATE role SET title=?,type=? WHERE id=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setString(1, r.getTitle());
+			stat.setInt(2, r.getType());
+			stat.setInt(3, r.getId());
+			stat.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
-	public Role find(String username) {
+	public Role find(String title) {
 		// TODO Auto-generated method stub
+		String sql = "SELECT id,title,type FROM user WHERE title=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setString(1, title);
+			ResultSet rs = stat.executeQuery();
+			Role r = null;
+			if (rs.next()) {
+				r = new Role();
+				r.setId(rs.getInt(1));
+				r.setTitle(rs.getString(2));
+				r.setType(rs.getInt(3));
+			}
+			return r;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Role find(int id) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT id,title,type FROM user WHERE id=?";
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setInt(1, id);
+			ResultSet rs = stat.executeQuery();
+			Role r = null;
+			if (rs.next()) {
+				r = new Role();
+				r.setId(rs.getInt(1));
+				r.setTitle(rs.getString(2));
+				r.setType(rs.getInt(3));
+			}
+			return r;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public List<Role> findAll() {
 		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub 
-//        String sql = "SELECT username,role,fullname,email,phone FROM user";  
-//        try {
-//			stat = conn.prepareStatement(sql);
-//	        ResultSet rs = stat.executeQuery();  
+		String sql = "SELECT id,title,type FROM role";
+		try {
+			stat = conn.prepareStatement(sql);
+			ResultSet rs = stat.executeQuery();
 			List<Role> list = new ArrayList<Role>();
-	        Role r = null;  
-	       for(int i=0; i<5; i++){  
-	            r = new Role(); 
-	            r.setType(i);
-	            String str = String.format("Role%d", i);
-	            r.setTitle(str);
-	            list.add(r);
-	        }  
-	        return list;
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
-//		return null;
+			Role r = null;
+			while (rs.next()) {
+				r = new Role();
+				r.setId(rs.getInt(1));
+				r.setTitle(rs.getString(2));
+				r.setType(rs.getInt(3));
+				list.add(r);
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
