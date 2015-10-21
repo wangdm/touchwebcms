@@ -39,6 +39,7 @@ public class UserDaoImpl implements UserDao {
 			stat.setString(4, u.getEmail());
 			stat.setString(5, u.getPhone());
 			stat.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,6 +55,7 @@ public class UserDaoImpl implements UserDao {
 			stat = conn.prepareStatement(sql);
 			stat.setInt(1, id);
 			stat.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,14 +66,16 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean update(User u) {
 		// TODO Auto-generated method stub
-		String sql = "UPDATE user SET fullname=?,email=?,phone=? WHERE Id=?";
+		String sql = "UPDATE user SET role=?,fullname=?,email=?,phone=? WHERE Id=?";
 		try {
 			stat = conn.prepareStatement(sql);
-			stat.setString(1, u.getFullname());
-			stat.setString(2, u.getEmail());
-			stat.setString(3, u.getPhone());
-			stat.setInt(4, u.getId());
+			stat.setInt(1, u.getRoletype());
+			stat.setString(2, u.getFullname());
+			stat.setString(3, u.getEmail());
+			stat.setString(4, u.getPhone());
+			stat.setInt(5, u.getId());
 			stat.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -156,6 +160,36 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean check(String type, String value) {
+		// TODO Auto-generated method stub
+		String sql = null;
+		if ("username".equals(type)) {
+			sql = "SELECT Id FROM user where username=?";
+
+		} else if ("email".equals(type)) {
+			sql = "SELECT Id FROM user where email=?";
+
+		} else if ("phone".equals(type)) {
+			sql = "SELECT Id FROM user where phone=?";
+
+		} else {
+			return true;
+		}
+		try {
+			stat = conn.prepareStatement(sql);
+			stat.setString(1, value);
+			ResultSet rs = stat.executeQuery();
+			if (rs.next()) {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 }

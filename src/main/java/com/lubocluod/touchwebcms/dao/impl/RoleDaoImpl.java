@@ -36,6 +36,7 @@ public class RoleDaoImpl implements RoleDao {
 			stat.setString(1, r.getTitle());
 			stat.setInt(2, r.getType());
 			stat.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,6 +52,7 @@ public class RoleDaoImpl implements RoleDao {
 			stat = conn.prepareStatement(sql);
 			stat.setInt(1, id);
 			stat.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,6 +70,7 @@ public class RoleDaoImpl implements RoleDao {
 			stat.setInt(2, r.getType());
 			stat.setInt(3, r.getId());
 			stat.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,7 +81,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public Role find(String title) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT id,title,type FROM user WHERE title=?";
+		String sql = "SELECT id,title,type FROM role WHERE title=?";
 		try {
 			stat = conn.prepareStatement(sql);
 			stat.setString(1, title);
@@ -101,7 +104,7 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
 	public Role find(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT id,title,type FROM user WHERE id=?";
+		String sql = "SELECT id,title,type FROM role WHERE id=?";
 		try {
 			stat = conn.prepareStatement(sql);
 			stat.setInt(1, id);

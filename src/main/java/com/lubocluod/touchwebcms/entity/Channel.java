@@ -2,6 +2,7 @@ package com.lubocluod.touchwebcms.entity;
 
 public class Channel {
 	private int id;
+	private int userid;
 	private String name;
 	private String pushuri;
 	private String pulluri;
@@ -12,7 +13,13 @@ public class Channel {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
+	public int getUserid() {
+        return userid;
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+    public String getName() {
 		return name;
 	}
 	public void setName(String name) {
