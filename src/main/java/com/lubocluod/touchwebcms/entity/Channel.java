@@ -1,11 +1,15 @@
 package com.lubocluod.touchwebcms.entity;
 
+import java.sql.Timestamp;
+
 public class Channel {
 	private int id;
 	private int userid;
 	private String name;
 	private String pushuri;
 	private String pulluri;
+	private Timestamp createtime;
+	private int status;
 	
 	public int getId() {
 		return id;
@@ -37,4 +41,16 @@ public class Channel {
 	public void setPulluri(String pulluri) {
 		this.pulluri = pulluri;
 	}
+    public Timestamp getCreatetime() {
+        return createtime;
+    }
+    public void setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
+    }
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

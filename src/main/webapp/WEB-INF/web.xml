@@ -26,7 +26,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ChannelManagerServlet</servlet-name>
-    <url-pattern>/channelmanager</url-pattern>
+    <url-pattern>/chnmanager</url-pattern>
   </servlet-mapping>
   
   <session-config>

@@ -28,22 +28,28 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
-	public boolean add(Channel c) {
+	public int add(Channel c) {
 		// TODO Auto-generated method stub
-		String sql = "INSERT INTO channel(userid,name,pushuri,pulluri) VALUES(?,?,?)";
+		String sql = "INSERT INTO channel(userid,name,pushuri,pulluri,create_time) VALUES(?,?,?,?,?)";
 		try {
-			stat = conn.prepareStatement(sql);
+			stat = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			stat.setInt(1, c.getUserid());
 			stat.setString(2, c.getName());
 			stat.setString(3, c.getPushuri());
 			stat.setString(4, c.getPulluri());
+			stat.setTimestamp(5, c.getCreatetime());
 			stat.executeUpdate();
-			return true;
+			ResultSet rs = stat.getGeneratedKeys();
+			if (rs.next()) {
+	            return rs.getInt(1);
+			} else {
+		        return -1;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
@@ -84,7 +90,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public Channel find(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT id,userid,name,pushuri,pulluri FROM channel WHERE id=?";
+		String sql = "SELECT id,userid,name,pushuri,pulluri,create_time FROM channel WHERE id=?";
 		try {
 			stat = conn.prepareStatement(sql);
 			stat.setInt(1, id);
@@ -97,6 +103,7 @@ public class ChannelDaoImpl implements ChannelDao {
 				c.setName(rs.getString(3));
 				c.setPushuri(rs.getString(4));
 				c.setPulluri(rs.getString(5));
+                c.setCreatetime(rs.getTimestamp(6));
 			}
 			return c;
 		} catch (SQLException e) {
@@ -109,7 +116,7 @@ public class ChannelDaoImpl implements ChannelDao {
     @Override
     public List<Channel> findByUser(int uid) {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,name,pushuri,pulluri FROM channel where userid=?";
+        String sql = "SELECT id,name,pushuri,pulluri,create_time FROM channel where userid=?";
         try {
             stat = conn.prepareStatement(sql);
             stat.setInt(1, uid);
@@ -122,6 +129,8 @@ public class ChannelDaoImpl implements ChannelDao {
                 c.setName(rs.getString(2));
                 c.setPushuri(rs.getString(3));
                 c.setPulluri(rs.getString(4));
+                c.setCreatetime(rs.getTimestamp(5));
+                list.add(c);
             }
             return list;
         } catch (SQLException e) {
@@ -134,7 +143,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public List<Channel> findAll() {
 		// TODO Auto-generated method stub
-		String sql = "SELECT id,userid,name,pushuri,pulluri FROM channel";
+		String sql = "SELECT id,userid,name,pushuri,pulluri,create_time FROM channel";
 		try {
 			stat = conn.prepareStatement(sql);
 			ResultSet rs = stat.executeQuery();
@@ -147,6 +156,8 @@ public class ChannelDaoImpl implements ChannelDao {
 				c.setName(rs.getString(3));
 				c.setPushuri(rs.getString(4));
 				c.setPulluri(rs.getString(5));
+				c.setCreatetime(rs.getTimestamp(6));
+                list.add(c);
 			}
 			return list;
 		} catch (SQLException e) {
@@ -155,5 +166,22 @@ public class ChannelDaoImpl implements ChannelDao {
 		}
 		return null;
 	}
+
+    @Override
+    public boolean control(int id, int cmd) {
+        // TODO Auto-generated method stub
+        String sql = "UPDATE channel SET status=? WHERE id=?";
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setInt(1, cmd);
+            stat.setInt(2, id);
+            stat.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

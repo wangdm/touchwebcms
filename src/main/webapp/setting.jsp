@@ -37,6 +37,7 @@
     <ul class="nav nav-tabs">
       <li role="presentation"><a href="usermanager.jsp">User</a></li>
       <li role="presentation"><a href="rolemanager.jsp">Role</a></li>
+      <li role="presentation"><a href="chnmanager.jsp">Channel</a></li>
       <li role="presentation" class="active"><a href="setting.jsp">Setting</a></li>
     </ul>
   </div>
