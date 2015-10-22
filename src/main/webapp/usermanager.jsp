@@ -122,7 +122,7 @@
       </div>
     </div>
     <%
-    	}
+        }
     %>
   </div>
   <div id="adddialog" title="Add user">
