@@ -9,6 +9,7 @@
      fromurl = "index.jsp"; 
     }
 	User user = (User) session.getAttribute("user");
+	boolean login_error = false;
 	if (null != user) {
         response.sendRedirect(fromurl);
 	}
@@ -21,6 +22,8 @@
 		if (null != user && user.getPasswd().equals(passwd)) {
 			session.setAttribute("user", user);
 			response.sendRedirect(fromurl);
+		}else{
+			login_error = true;
 		}
 	}
 %>
@@ -46,35 +49,47 @@
   <div class="container">
     <form class="form-horizontal" role="form" name="login"
       action="login.jsp" method="post">
-      <fieldset class="col-sm-4">
+      <fieldset class="col-sm-4 col-xs-12">
         <legend>Sign in</legend>
-            <input type="hidden"  name="from" value="<%=fromurl%>">
+        <%
+        	if(login_error == true)
+        	{
+        %>
         <div class="form-group">
-          <div class="col-sm-12">
+          <div class="col-sm-12 col-xs-12 alert alert-danger">
+            <span class="">Login Failed: Username and/or password was incorrect!</span>
+          </div>
+        </div>
+        <%
+        	}
+        %>
+        <input type="hidden"  name="from" value="<%=fromurl%>">
+        <div class="form-group">
+          <div class="col-sm-12 col-xs-12">
             <input type="text" name="username" class="form-control"
               id="username" placeholder="Username" required="required">
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-12">
+          <div class="col-sm-12 col-xs-12">
             <input type="password" name="passwd" class="form-control"
               id="passwd" placeholder="Password" required="required">
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-xs-6">
             <label><input type="checkbox" name="rememberme"
               class="" id="rememberme"> Remember Me</label>
           </div>
-          <div class="col-sm-6 forget-password">
+          <div class="col-sm-6 col-xs-6 forget-password">
             <a>Forget Password</a>
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-xs-6">
             <button type="submit" class="btn btn-primary col-sm-10">Login</button>
           </div>
-          <div class="col-sm-6 register">
+          <div class="col-sm-6 col-xs-6 register">
             <a href="register.jsp">Register Now</a>
           </div>
         </div>
