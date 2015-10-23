@@ -35,6 +35,7 @@ public class UserManagerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
+        response.setContentType("application/json;charset=UTF-8");
 		boolean result = false;
 		String op = request.getParameter("op");
 		String return_str = "{";
@@ -80,6 +81,47 @@ public class UserManagerServlet extends HttpServlet {
 				user.setPasswd(request.getParameter("passwd"));
 				result = userservice.update(user);
 			}
+		} else if("check".equals(op))
+		{
+            UserDaoImpl userservice = new UserDaoImpl();
+		    String type = request.getParameter("type");
+		    String value = request.getParameter("value");
+		    do{
+    		    if(type==null || type.length()==0)
+    		    {
+                    result = false;
+                    return_str += "\"errorinfo\":\"error!\",";
+                    break;
+    		        
+    		    }else if("username".equals(type)){
+    		        if(value==null || value.length()==0)
+    		        {
+    		            result = false;
+    		            return_str += "\"errorinfo\":\"The "+type+" can't be empty!\",";
+                        break;
+    		        }
+    		    }else if("email".equals(type)){
+                    if(value==null || value.length()==0)
+                    {
+                        result = false;
+                        return_str += "\"errorinfo\":\"The "+type+" can't be empty!\",";
+                        break;
+                    }
+    		        
+    		    }else if("phone".equals(type)){
+                    if(value==null || value.length()==0)
+                    {
+                        result = false;
+                        return_str += "\"errorinfo\":\"The "+type+" can't be empty!\",";
+                        break;
+                    }
+                    
+                }
+                result = userservice.check(type, value);
+                if(result==false)
+                    return_str += "\"errorinfo\":\"The "+type+" is already existed!\",";
+		    }while(false);
+
 		}
 		if (result) {
 			return_str += "\"result\":\"success\"";

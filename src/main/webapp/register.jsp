@@ -2,8 +2,8 @@
   pageEncoding="UTF-8"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
-<%!boolean register = true;%>
 <%
+    boolean register = true;
 	String username = request.getParameter("username");
 	if (null != username && !username.equals("")) {
 		User user = new User();
@@ -31,6 +31,9 @@
 .forget-password, .register {
 	text-align: right;
 }
+.form-error{
+    visibility:hidden;
+}
 </style>
 </head>
 
@@ -40,61 +43,61 @@
     	if (register) {
     %>
     <form class="form-horizontal" name="regiter" action="register.jsp"
-      method="post">
+      method="post" novalidate="novalidate" onsubmit="return registerCheck()">
       <fieldset class="col-md-10 col-sm-12 col-xs-12">
         <legend>Register</legend>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-6 col-sm-7 col-xs-12">
             <input type="text" name="username" class="form-control"
-              id="username" placeholder="User Name" required="required">
+              id="username" placeholder="User Name" required="required" onblur='formcheck(this,"username", this.value)'>
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12">
-          	<span class="label label-danger">The username is already existed</span>
+          	<span class="label label-danger form-error">The username is already existed</span>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-6 col-sm-7 col-xs-12">
             <input type="password" name="passwd" class="form-control"
-              id="passwd" placeholder="Password" required="required">
+              id="passwd" placeholder="Password" required="required" onblur='formcheck(this,"passwd", this.value)'>
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12">
-          	<span class="label label-danger">Password must be six char at least</span>
+          	<span class="label label-danger form-error">Password must be six char at least</span>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-6 col-sm-7 col-xs-12">
             <input type="password" name="_passwd" class="form-control"
-              id="_passwd" placeholder="Conform Password" required="required">
+              id="_passwd" placeholder="Conform Password" required="required" onblur='formcheck(this,"_passwd", this.value)'>
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12">
-          	<span class="label label-danger">Password don't match</span>
+          	<span class="label label-danger form-error">Password don't match</span>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-6 col-sm-7 col-xs-12">
             <input type="email" name="email" class="form-control"
-              id="email" placeholder="E-mail" required="required">
+              id="email" placeholder="E-mail" required="required" onblur='formcheck(this,"email", this.value)'>
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12">
-          	<span class="label label-danger">The E-mail is taken by other</span>
+          	<span class="label label-danger form-error">The E-mail is taken by other</span>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-6 col-sm-7 col-xs-12">
             <input type="text" name="fullname" class="form-control"
-              id="fullname" placeholder="Full Name" required="required">
+              id="fullname" placeholder="Full Name" required="required" onblur='formcheck(this,"fullname", this.value)'>
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12">
-          	<span class="label label-default"></span>
+          	<span class="label label-danger form-error"></span>
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-6 col-sm-7 col-xs-12">
             <input type="text" name="phone" class="form-control"
-              id="phone" placeholder="Phone" required="required">
+              id="phone" placeholder="Phone" required="required" onblur='formcheck(this,"phone", this.value)'>
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12">
-          	<span class="label label-danger">The phone is taken by other</span>
+          	<span class="label label-danger form-error">The phone is taken by other</span>
           </div>
         </div>
         <div class="form-group">
@@ -109,12 +112,110 @@
     </form>
     <%
     	} else {
-    		boolean register = true;
     %>
     register successfully.
     <%
     	}
     %>
   </div>
+  <script>
+  var checkreslut = true;
+  function formcheck(ele,type,value){
+      if(type=="username"){
+          if(value.length==0){
+              $(ele).parent().parent().find("span").text("The username can't be empty!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+          }else
+          if(value.length<6){
+              $(ele).parent().parent().find("span").text("The username must be six word at least!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+         }else{
+             $(ele).parent().parent().find("span").css("visibility", "hidden");
+             $.ajax({
+                 "url": "<%=application.getContextPath()%>/usermanager?op=check&type="+type+"&value="+value,
+                 "type": "get",
+             }).success(function(data){
+                 if(data.result=="failed"){
+                     $(ele).parent().parent().find("span").text(data.errorinfo);
+                     $(ele).parent().parent().find("span").css("visibility", "visible");
+                     checkreslut =  false;
+                 }
+             });
+         }
+      }else if(type=="passwd"){
+          if(value.length<6){
+              $(ele).parent().parent().find("span").text("The password must be six word at least!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+         }else{
+             $(ele).parent().parent().find("span").css("visibility", "hidden");
+         }
+          
+      }else if(type=="_passwd"){
+          if($("input[name=passwd]").val()!=$("input[name=_passwd]").val()){
+              $(ele).parent().parent().find("span").text("Password don't match!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+         }else{
+             $(ele).parent().parent().find("span").css("visibility", "hidden");
+         }
+      }else if(type=="fullname"){
+          if(value.length==0){
+              $(ele).parent().parent().find("span").text("The fullname can't be empty!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+          }else{
+              $(ele).parent().parent().find("span").css("visibility", "hidden");
+          }
+          
+      }else if(type=="email"){
+          if(value.length==0){
+              $(ele).parent().parent().find("span").text("The email can't be empty!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+          }else{
+             $(ele).parent().parent().find("span").css("visibility", "hidden");
+             $.ajax({
+                 "url": "<%=application.getContextPath()%>/usermanager?op=check&type="+type+"&value="+value,
+                 "type": "get",
+             }).success(function(data){
+                 if(data.result=="failed"){
+                     $(ele).parent().parent().find("span").text(data.errorinfo);
+                     $(ele).parent().parent().find("span").css("visibility", "visible");
+                     checkreslut =  false;
+                 }
+             });
+         }
+          
+      }else if(type=="phone"){
+          if(value.length==0){
+              $(ele).parent().parent().find("span").text("The phone can't be empty!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+          }else{
+             $(ele).parent().parent().find("span").css("visibility", "hidden");
+             $.ajax({
+                 "url": "<%=application.getContextPath()%>/usermanager?op=check&type="+type+"&value="+value,
+                 "type": "get",
+             }).success(function(data){
+                 if(data.result=="failed"){
+                     $(ele).parent().parent().find("span").text(data.errorinfo);
+                     $(ele).parent().parent().find("span").css("visibility", "visible");
+                     checkreslut =  false;
+                 }
+             });
+         }
+      }
+  }
+  function registerCheck(){
+      checkreslut = true;
+      $("input").each(function(){
+          var tmp = $(this).blur();
+      });
+      return checkreslut;
+  }
+  </script>
 </body>
 </html>

@@ -36,6 +36,7 @@ public class ChannelManagerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
+        response.setContentType("application/json;charset=UTF-8");
 		boolean result = false;
 		User u = (User)request.getSession().getAttribute("user");
 		if(u==null)
