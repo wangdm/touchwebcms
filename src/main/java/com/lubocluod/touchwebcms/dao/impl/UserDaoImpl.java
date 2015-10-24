@@ -86,7 +86,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User find(String username) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT Id,password,fullname,email,phone FROM user WHERE username=?";
+		String sql = "SELECT Id,role,password,fullname,email,phone FROM user WHERE username=?";
 		try {
 			stat = conn.prepareStatement(sql);
 			stat.setString(1, username);
@@ -94,12 +94,13 @@ public class UserDaoImpl implements UserDao {
 			User u = null;
 			if (rs.next()) {
 				u = new User();
-				u.setId(rs.getInt(1));
+				u.setId(rs.getInt("Id"));
 				u.setUsername(username);
-				u.setPasswd(rs.getString(2));
-				u.setFullname(rs.getString(3));
-				u.setEmail(rs.getString(4));
-				u.setPhone(rs.getString(5));
+				u.setRoletype(rs.getInt("role"));
+				u.setPasswd(rs.getString("password"));
+				u.setFullname(rs.getString("fullname"));
+				u.setEmail(rs.getString("email"));
+				u.setPhone(rs.getString("phone"));
 			}
 			return u;
 		} catch (SQLException e) {
@@ -112,7 +113,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User find(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT username,password,fullname,email,phone FROM user WHERE Id=?";
+		String sql = "SELECT username,role,password,fullname,email,phone FROM user WHERE Id=?";
 		try {
 			stat = conn.prepareStatement(sql);
 			stat.setInt(1, id);
@@ -121,11 +122,12 @@ public class UserDaoImpl implements UserDao {
 			if (rs.next()) {
 				u = new User();
 				u.setId(id);
-				u.setUsername(rs.getString(1));
-				u.setPasswd(rs.getString(2));
-				u.setFullname(rs.getString(3));
-				u.setEmail(rs.getString(4));
-				u.setPhone(rs.getString(5));
+				u.setUsername(rs.getString("username"));
+				u.setRoletype(rs.getInt("role"));
+				u.setPasswd(rs.getString("password"));
+				u.setFullname(rs.getString("fullname"));
+				u.setEmail(rs.getString("email"));
+				u.setPhone(rs.getString("phone"));
 			}
 			return u;
 		} catch (SQLException e) {
@@ -146,12 +148,12 @@ public class UserDaoImpl implements UserDao {
 			User u = null;
 			while (rs.next()) {
 				u = new User();
-				u.setId(rs.getInt(1));
-				u.setUsername(rs.getString(2));
-				u.setRoletype(rs.getInt(3));
-				u.setFullname(rs.getString(4));
-				u.setEmail(rs.getString(5));
-				u.setPhone(rs.getString(6));
+				u.setId(rs.getInt("Id"));
+				u.setUsername(rs.getString("username"));
+				u.setRoletype(rs.getInt("role"));
+				u.setFullname(rs.getString("fullname"));
+				u.setEmail(rs.getString("email"));
+				u.setPhone(rs.getString("phone"));
 				list.add(u);
 			}
 			return list;

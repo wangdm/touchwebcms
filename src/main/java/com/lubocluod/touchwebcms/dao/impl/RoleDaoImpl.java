@@ -89,9 +89,9 @@ public class RoleDaoImpl implements RoleDao {
 			Role r = null;
 			if (rs.next()) {
 				r = new Role();
-				r.setId(rs.getInt(1));
-				r.setTitle(rs.getString(2));
-				r.setType(rs.getInt(3));
+				r.setId(rs.getInt("id"));
+				r.setTitle(rs.getString("title"));
+				r.setType(rs.getInt("type"));
 			}
 			return r;
 		} catch (SQLException e) {
@@ -112,9 +112,9 @@ public class RoleDaoImpl implements RoleDao {
 			Role r = null;
 			if (rs.next()) {
 				r = new Role();
-				r.setId(rs.getInt(1));
-				r.setTitle(rs.getString(2));
-				r.setType(rs.getInt(3));
+                r.setId(rs.getInt("id"));
+                r.setTitle(rs.getString("title"));
+                r.setType(rs.getInt("type"));
 			}
 			return r;
 		} catch (SQLException e) {
@@ -135,9 +135,9 @@ public class RoleDaoImpl implements RoleDao {
 			Role r = null;
 			while (rs.next()) {
 				r = new Role();
-				r.setId(rs.getInt(1));
-				r.setTitle(rs.getString(2));
-				r.setType(rs.getInt(3));
+                r.setId(rs.getInt("id"));
+                r.setTitle(rs.getString("title"));
+                r.setType(rs.getInt("type"));
 				list.add(r);
 			}
 			return list;
