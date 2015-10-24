@@ -4,17 +4,9 @@
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%
     boolean register = true;
-	String username = request.getParameter("username");
-	if (null != username && !username.equals("")) {
-		User user = new User();
-		UserDaoImpl userservice = new UserDaoImpl();
-		user.setUsername(username);
-		user.setPasswd(request.getParameter("passwd"));
-		user.setFullname(request.getParameter("fullname"));
-		user.setEmail(request.getParameter("email"));
-		user.setPhone(request.getParameter("phone"));
-		userservice.add(user);
-		register = false;
+	String result = request.getParameter("result");
+	if ("success".equals(result)) {
+	    register = false;
 	}
 %>
 <!DOCTYPE HTML>
@@ -42,8 +34,8 @@
     <%
     	if (register) {
     %>
-    <form class="form-horizontal" name="regiter" action="register.jsp"
-      method="post" novalidate="novalidate" onsubmit="return registerCheck()">
+    <form class="form-horizontal" name="register" action=""
+      method="post" novalidate="novalidate">
       <fieldset class="col-md-10 col-sm-12 col-xs-12">
         <legend>Register</legend>
         <div class="form-group">
@@ -102,7 +94,7 @@
         </div>
         <div class="form-group">
           <div class="col-md-offset-1 col-md-2 col-sm-2 col-xs-2">
-            <button type="submit" class="btn btn-success col-sm-12">Register</button>
+            <button type="button" class="btn btn-success col-sm-12" onclick="registerCheck()">Register</button>
           </div>
           <div class="col-md-4 col-sm-5 col-xs-10 register">
             Already have an account? <a href="login.jsp">Login</a>
@@ -113,7 +105,7 @@
     <%
     	} else {
     %>
-    register successfully.
+    <h3>register successfully. >> <a href="login.jsp">Login</a></h3>
     <%
     	}
     %>
@@ -132,7 +124,6 @@
               $(ele).parent().parent().find("span").css("visibility", "visible");
               checkreslut =  false;
          }else{
-             $(ele).parent().parent().find("span").css("visibility", "hidden");
              $.ajax({
                  "url": "<%=application.getContextPath()%>/usermanager?op=check&type="+type+"&value="+value,
                  "type": "get",
@@ -141,6 +132,8 @@
                      $(ele).parent().parent().find("span").text(data.errorinfo);
                      $(ele).parent().parent().find("span").css("visibility", "visible");
                      checkreslut =  false;
+                 }else{
+                     $(ele).parent().parent().find("span").css("visibility", "hidden");
                  }
              });
          }
@@ -176,7 +169,6 @@
               $(ele).parent().parent().find("span").css("visibility", "visible");
               checkreslut =  false;
           }else{
-             $(ele).parent().parent().find("span").css("visibility", "hidden");
              $.ajax({
                  "url": "<%=application.getContextPath()%>/usermanager?op=check&type="+type+"&value="+value,
                  "type": "get",
@@ -185,6 +177,8 @@
                      $(ele).parent().parent().find("span").text(data.errorinfo);
                      $(ele).parent().parent().find("span").css("visibility", "visible");
                      checkreslut =  false;
+                 }else{
+                     $(ele).parent().parent().find("span").css("visibility", "hidden");
                  }
              });
          }
@@ -195,7 +189,6 @@
               $(ele).parent().parent().find("span").css("visibility", "visible");
               checkreslut =  false;
           }else{
-             $(ele).parent().parent().find("span").css("visibility", "hidden");
              $.ajax({
                  "url": "<%=application.getContextPath()%>/usermanager?op=check&type="+type+"&value="+value,
                  "type": "get",
@@ -204,6 +197,8 @@
                      $(ele).parent().parent().find("span").text(data.errorinfo);
                      $(ele).parent().parent().find("span").css("visibility", "visible");
                      checkreslut =  false;
+                 }else{
+                     $(ele).parent().parent().find("span").css("visibility", "hidden");
                  }
              });
          }
@@ -213,6 +208,21 @@
       checkreslut = true;
       $("input").each(function(){
           var tmp = $(this).blur();
+      });
+      var register_info = $("form[name=register]").serialize();
+      $.ajax({
+          "url": "<%=application.getContextPath()%>/usermanager?op=add",
+          "type": "get",
+          "data": register_info,
+          "dataType": "json",
+      }).fail(function(){
+          alert("connect "+this.url+" failed!");
+      }).success(function(data){
+          if(data.result=="success"){
+              window.location.href="register.jsp?result=success";
+              return true;
+          }
+          return false;
       });
       return checkreslut;
   }

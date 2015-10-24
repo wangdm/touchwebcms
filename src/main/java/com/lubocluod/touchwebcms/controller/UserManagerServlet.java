@@ -38,6 +38,7 @@ public class UserManagerServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
 		boolean result = false;
 		String op = request.getParameter("op");
+		User cur_user = (User)request.getSession().getAttribute("user");
 		String return_str = "{";
 
 		if ("add".equals(op)) {
@@ -66,13 +67,28 @@ public class UserManagerServlet extends HttpServlet {
 			UserDaoImpl userservice = new UserDaoImpl();
 			User user = userservice.find(userid);
 			if (user != null) {
-                user.setRoletype(Integer.parseInt(request.getParameter("usertype")));
-				user.setFullname(request.getParameter("fullname"));
-				user.setEmail(request.getParameter("email"));
-				user.setPhone(request.getParameter("phone"));
+			    String param = request.getParameter("usertype");
+			    if(param!=null){
+			        user.setRoletype(Integer.parseInt(param));
+			    }
+                param = request.getParameter("fullname");
+                if(param!=null){
+                    user.setFullname(param);
+                }
+                param = request.getParameter("email");
+                if(param!=null){
+                    user.setEmail(param);
+                }
+                param = request.getParameter("phone");
+                if(param!=null){
+                    user.setPhone(param);
+                }
 				result = userservice.update(user);
+		        if (result) {
+		            request.getSession().setAttribute("user", user);
+		        } 
 			}
-		} else if ("changepasswd".equals(op)) {
+		} else if ("changepwd".equals(op)) {
 			String idstr = request.getParameter("userid");
 			int userid = Integer.parseInt(idstr);
 			UserDaoImpl userservice = new UserDaoImpl();
@@ -117,7 +133,11 @@ public class UserManagerServlet extends HttpServlet {
                     }
                     
                 }
-                result = userservice.check(type, value);
+                if(cur_user==null){
+                    result = userservice.check(type, value, -1);
+                }else{
+                    result = userservice.check(type, value, cur_user.getId());
+                }
                 if(result==false)
                     return_str += "\"errorinfo\":\"The "+type+" is already existed!\",";
 		    }while(false);

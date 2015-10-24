@@ -39,11 +39,11 @@ public class UserRegisterCheckServlet extends HttpServlet {
 		{
 			UserDaoImpl userservice = new UserDaoImpl();
 			if("ckusername".equals(op)){
-				check = userservice.check("username", value);
+				check = userservice.check("username", value, -1);
 			}else if("ckemail".equals(op)){
-				check = userservice.check("email", value);
+				check = userservice.check("email", value, -1);
 			}else if("ckphone".equals(op)){
-				check = userservice.check("phone", value);
+				check = userservice.check("phone", value, -1);
 			}
 		}
 		if (check) {

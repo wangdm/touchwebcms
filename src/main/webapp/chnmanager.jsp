@@ -109,7 +109,7 @@
                 out.println("<td>"+c.getStatus()+"</td>");
                 out.println("<td>"+sdf.format(c.getCreatetime())+"</td>");
                 out.println("<td><button type=\"button\" value=\""+c.getId()+"\"class=\"deletechn btn btn-danger btn-xs\">Delete</button></td>");
-                out.println("<td><button type=\"button\" value=\"" + c.getId() + "\"class=\"editchn btn btn-info btn-xs\">Profile</button></td>");
+                out.println("<td><button type=\"button\" value=\"" + c.getId() + "\"class=\"editchn btn btn-info btn-xs\">Edit</button></td>");
                 out.println("</tr>");
             }
         %>
@@ -203,14 +203,14 @@
                     }).success(function(data){
                         var str = "<tr id=\"chnlist_"+data.chnid+"\">" 
                                    + "<td><input type=\"checkbox\" name=\"choose\" value=\""+data.chnid+"\"></td>" 
-                                   + "<td>" + $("#user_add input:text[name='titlename']").val() + "</td>" 
+                                   + "<td>" + $("#chn_add input:text[name='titlename']").val() + "</td>" 
                                    + "<td><%=username%></td>"
-                                   + "<td>" + $("#user_add input:text[name='pushuri']").val() + "</td>" 
-                                   + "<td>" + $("#user_add input:text[name='pulluri']").val() + "</td>" 
+                                   + "<td>" + $("#chn_add input:text[name='pushuri']").val() + "</td>" 
+                                   + "<td>" + $("#chn_add input:text[name='pulluri']").val() + "</td>" 
                                    + "<td>0</td>"
                                    + "<td>" + new Date() + "</td>"
                                    + "<td><button type=\"button\" value=\"" + data.chnid + "\"class=\"deletechn btn btn-danger btn-xs\">Delete</button></td>" 
-                                   + "<td><button type=\"button\" value=\"" + data.chnid + "\"class=\"editchn btn btn-info btn-xs\">Profile</button></td>" 
+                                   + "<td><button type=\"button\" value=\"" + data.chnid + "\"class=\"editchn btn btn-info btn-xs\">Edit</button></td>" 
                                    + "</tr>";
                         $("#chnlist").append(str);
                     });
@@ -285,9 +285,9 @@
                     }).fail(function() {
                         alert("connect " + this.url + " failed!");
                     }) .success(function(data) {
-                        $("tr[id=chnlist_"+ cur_chn+ "] td:nth-child(2)").text($("#user_edit input:text[name='titlename']").val());
-                        $("tr[id=chnlist_"+ cur_chn+ "] td:nth-child(4)").text($("#user_edit input:text[name='pushuri']").val());
-                        $("tr[id=chnlist_"+ cur_chn+ "] td:nth-child(5)").text($("#user_edit input:text[name='pulluri']").val());
+                        $("tr[id=chnlist_"+ cur_chn+ "] td:nth-child(2)").text($("#chn_edit input:text[name='titlename']").val());
+                        $("tr[id=chnlist_"+ cur_chn+ "] td:nth-child(4)").text($("#chn_edit input:text[name='pushuri']").val());
+                        $("tr[id=chnlist_"+ cur_chn+ "] td:nth-child(5)").text($("#chn_edit input:text[name='pulluri']").val());
                     });
                 }
             }, {

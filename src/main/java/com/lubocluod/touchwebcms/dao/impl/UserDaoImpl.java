@@ -163,17 +163,17 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean check(String type, String value) {
+	public boolean check(String type, String value, int id) {
 		// TODO Auto-generated method stub
 		String sql = null;
 		if ("username".equals(type)) {
-			sql = "SELECT count(*) record FROM user where username=?";
+			sql = "SELECT count(*) record,id FROM user where username=?";
 
 		} else if ("email".equals(type)) {
-			sql = "SELECT count(*) record FROM user where email=?";
+			sql = "SELECT count(*) record,id FROM user where email=?";
 
 		} else if ("phone".equals(type)) {
-			sql = "SELECT count(*) record FROM user where phone=?";
+			sql = "SELECT count(*) record,id FROM user where phone=?";
 
 		} else {
 			return true;
@@ -186,7 +186,12 @@ public class UserDaoImpl implements UserDao {
 			    int count = rs.getInt("record");
 			    if (count>0)
 			    {
-			        return false;
+			        int _id = rs.getInt("id");
+			        if( id == _id){
+			            return true;
+			        }else{
+			            return false;
+			        }
 			    }
 			}
 		} catch (SQLException e) {
