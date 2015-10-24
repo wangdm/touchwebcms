@@ -66,14 +66,15 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean update(User u) {
 		// TODO Auto-generated method stub
-		String sql = "UPDATE user SET role=?,fullname=?,email=?,phone=? WHERE Id=?";
+		String sql = "UPDATE user SET role=?,fullname=?,email=?,phone=?,password=? WHERE Id=?";
 		try {
 			stat = conn.prepareStatement(sql);
 			stat.setInt(1, u.getRoletype());
 			stat.setString(2, u.getFullname());
 			stat.setString(3, u.getEmail());
 			stat.setString(4, u.getPhone());
-			stat.setInt(5, u.getId());
+            stat.setString(5, u.getPasswd());
+			stat.setInt(6, u.getId());
 			stat.executeUpdate();
 			return true;
 		} catch (SQLException e) {

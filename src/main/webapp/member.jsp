@@ -162,7 +162,7 @@
               <div class="form-group">
                 <div class="col-md-offset-1 col-md-7 col-sm-8 col-xs-12">
                   <input type="password" name="oldpasswd" class="form-control"
-                    id="oldpasswd" placeholder="Old Password" required="required">
+                    id="oldpasswd" placeholder="Old Password" required="required" onblur='formcheck(this,"oldpasswd", this.value)'>
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-12">
                   <span class="label label-danger form-error">Password is error!</span>
@@ -171,7 +171,7 @@
               <div class="form-group">
                 <div class="col-md-offset-1 col-md-7 col-sm-8 col-xs-12">
                   <input type="password" name="passwd" class="form-control"
-                    id="passwd" placeholder="New Password" required="required">
+                    id="passwd" placeholder="New Password" required="required" onblur='formcheck(this,"passwd", this.value)'>
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-12">
                   <span class="label label-danger form-error">Password must be six char at least</span>
@@ -180,15 +180,18 @@
               <div class="form-group">
                 <div class="col-md-offset-1 col-md-7 col-sm-8 col-xs-12">
                   <input type="password" name="_passwd" class="form-control"
-                    id="_passwd" placeholder="Conform Password" required="required">
+                    id="_passwd" placeholder="Conform Password" required="required" onblur='formcheck(this,"_passwd", this.value)'>
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-12">
                   <span class="label label-danger form-error">Entered passwords does not match</span>
                 </div>
               </div>
               <div class="form-group">
-                <div class="col-md-offset-1 col-md-7 col-sm-8 col-xs-12">
+                <div class="col-md-offset-1 col-md-2 col-sm-2 col-xs-4">
                   <button type="button"  id="editpasswd" class="btn btn-success">Confirm</button>
+                </div>
+                <div class=" col-md-4 col-sm-5 col-xs-7 ">
+                  <span id="pwd-result" class="form-error alert alert-danger">Error!</span>
                 </div>
               </div>
             </fieldset>
@@ -401,6 +404,15 @@
              $(ele).parent().parent().find("span").css("visibility", "hidden");
          }
           
+      }else if(type=="oldpasswd"){
+          if(value.length==0){
+              $(ele).parent().parent().find("span").text("Please input the old password!");
+              $(ele).parent().parent().find("span").css("visibility", "visible");
+              checkreslut =  false;
+         }else{
+             $(ele).parent().parent().find("span").css("visibility", "hidden");
+         }
+          
       }else if(type=="_passwd"){
           if($("input[name=passwd]").val()!=$("input[name=_passwd]").val()){
               $(ele).parent().parent().find("span").text("Password don't match!");
@@ -457,14 +469,7 @@
          }
       }
   }
-  function sleep(delay)
-  {
-      var start = new Date().getTime();
-      while (new Date().getTime() < start + delay);
-    
-  }
-  //usage
-  //wait for 3 seconds
+
   function profileCheck(){
       checkreslut = true;
       $("#profile input").each(function(){
@@ -508,18 +513,28 @@
       }
   });
   $("#editpasswd").on("click",function(){
-      var edit_pwd_info = $("#changepwd").serialize();
-      $.ajax({
-          "url": "<%=application.getContextPath()%>/usermanager?op=changepwd&userid="+ <%=user.getId()%>,
-          "type" : "get",
-          "data": edit_pwd_info,
-          "dataType": "json",
-      }).fail(function() {
-          alert("connect " + this.url + " failed!");
-      }) .success(function(data) {
-          if(data.result=="success"){
-          }
-      });
+      passwordCheck();
+      if(checkreslut==true){
+        var edit_pwd_info = $("form[name=changepwd]").serialize();
+        $.ajax({
+            "url": "<%=application.getContextPath()%>/usermanager?op=changepwd&userid="+ <%=user.getId()%>,
+            "type" : "get",
+            "data": edit_pwd_info,
+            "dataType": "json",
+        }).fail(function() {
+            alert("connect " + this.url + " failed!");
+        }) .success(function(data) {
+            if(data.result=="success"){
+                $("#pwd-result").removeClass("form-error alert-danger");
+                $("#pwd-result").addClass("alert-success");
+                $("#pwd-result").text("Password change successfully.");
+            }else{
+                $("#pwd-result").removeClass("form-error alert-success");
+                $("#pwd-result").addClass("alert-danger");
+                $("#pwd-result").text(data.errorinfo);
+            }
+        });
+      }
   });
   $(".menu_add_chn").on("click", function() {
       cur_chn = -1;

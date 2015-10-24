@@ -84,19 +84,57 @@ public class UserManagerServlet extends HttpServlet {
                     user.setPhone(param);
                 }
 				result = userservice.update(user);
-		        if (result) {
+		        if (result && userid==cur_user.getId()) {
 		            request.getSession().setAttribute("user", user);
 		        } 
 			}
 		} else if ("changepwd".equals(op)) {
-			String idstr = request.getParameter("userid");
-			int userid = Integer.parseInt(idstr);
-			UserDaoImpl userservice = new UserDaoImpl();
-			User user = userservice.find(userid);
-			if (user != null) {
-				user.setPasswd(request.getParameter("passwd"));
-				result = userservice.update(user);
-			}
+		    do{
+    			String param = request.getParameter("userid");
+                if(param==null){
+                    result = false;
+                    return_str += "\"errorinfo\":\"Error!\",";
+                    break;
+                }
+    			String pwd = request.getParameter("passwd");
+                if(pwd==null){
+                    result = false;
+                    return_str += "\"errorinfo\":\"Please input new password!\",";
+                    break;
+                }
+                String _pwd = request.getParameter("_passwd");
+                if(_pwd==null){
+                    result = false;
+                    return_str += "\"errorinfo\":\"Please confirm the new password!\",";
+                    break;
+                }
+                if(!pwd.equals(_pwd)){
+                    result = false;
+                    return_str += "\"errorinfo\":\"The password don't match!\",";
+                    break;
+                }
+                String oldpwd = request.getParameter("oldpasswd");
+                if(oldpwd==null){
+                    result = false;
+                    return_str += "\"errorinfo\":\"Please input old password!\",";
+                    break;
+                }
+    			int userid = Integer.parseInt(param);
+    			UserDaoImpl userservice = new UserDaoImpl();
+    			User user = userservice.find(userid);
+    			if (user != null) {
+    			    if(!oldpwd.equals(user.getPasswd())){
+                        result = false;
+                        return_str += "\"errorinfo\":\"The old password is wrong!\",";
+                        break;
+    			    }
+    				user.setPasswd(request.getParameter("passwd"));
+    				result = userservice.update(user);
+                    if (result && userid==cur_user.getId()) {
+                        request.getSession().setAttribute("user", user);
+                    } 
+    			}
+		    }while(false);
 		} else if("check".equals(op))
 		{
             UserDaoImpl userservice = new UserDaoImpl();
