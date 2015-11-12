@@ -2,8 +2,9 @@ package com.lubocluod.touchwebcms.entity;
 
 public class CourseProperty {
     int propId;
+    int catId;
     String propName;
-    int paretnId;
+    int parentId;
 
     public int getPropId() {
         return propId;
@@ -11,6 +12,14 @@ public class CourseProperty {
 
     public void setPropId(int propId) {
         this.propId = propId;
+    }
+
+    public int getCatId() {
+        return catId;
+    }
+
+    public void setCatId(int catId) {
+        this.catId = catId;
     }
 
     public String getPropName() {
@@ -21,12 +30,12 @@ public class CourseProperty {
         this.propName = propName;
     }
 
-    public int getParetnId() {
-        return paretnId;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setParetnId(int paretnId) {
-        this.paretnId = paretnId;
+    public void setParentId(int paretnId) {
+        this.parentId = paretnId;
     }
 
 }
