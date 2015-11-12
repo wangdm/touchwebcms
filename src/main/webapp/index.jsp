@@ -24,6 +24,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="asset/css/bootstrap.css">
 <link rel="stylesheet" href="asset/css/bootstrap-theme.css">
+<link rel="stylesheet" href="asset/css/index.css">
 <script type="text/javascript" src="asset/js/jquery-2.1.4.js"></script>
 <script type="text/javascript" src="asset/js/bootstrap.js"></script>
 <script type="text/javascript" src="asset/jwplayer/jwplayer.js"></script>
@@ -42,11 +43,309 @@
       </div>
     </div>
   </nav>
-  <div class="container">
-    <div class="col-sm-10 col-sm-offset-1">
-      <div id="myPlayer">Loading the player ...</div>
+
+  <div class="navmenu-bg">
+    <div class="navmenu container">
+      <ul>
+        <li><a class="selected" href="<%=application.getContextPath()%>">首页</a></li>
+        <li><a href="<%=application.getContextPath()%>">普教课程</a></li>
+        <li><a href="<%=application.getContextPath()%>">高校课程</a></li>
+        <li><a href="<%=application.getContextPath()%>">职业教育</a></li>
+        <li><a href="<%=application.getContextPath()%>">兴趣爱好</a></li>
+        <li><a href="<%=application.getContextPath()%>">全部课程</a></li>
+        <li><a href="<%=application.getContextPath()%>">讲师/机构</a></li>
+        <li style="float:right;padding:3px">
+        <form name="search" action="search.jsp">
+            <input name="keyword" type="search"  class="form-control" placeholder="Search Course"/>
+        </form>
+        </li>
+      </ul>
     </div>
   </div>
+
+  <div id = "myCarousel" class = "carousel slide" style="max-height:400px">
+   
+   <!-- Carousel indicators -->
+   <ol class = "carousel-indicators">
+      <li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li>
+      <li data-target = "#myCarousel" data-slide-to = "1"></li>
+      <li data-target = "#myCarousel" data-slide-to = "2"></li>
+   </ol>   
+   
+   <!-- Carousel items -->
+   <div class = "carousel-inner">
+      <div class = "item active">
+         <img src = "http://www.tutorialspoint.com/bootstrap/images/slide1.png" alt = "First slide"  style="max-height:400px;text-align:center">
+         <div class = "carousel-caption">This Caption 1</div>
+      </div>
+      
+      <div class = "item">
+         <img src = "http://www.tutorialspoint.com/bootstrap/images/slide2.png" alt = "Second slide"  style="max-height:400px;text-align:center">
+         <div class = "carousel-caption">This Caption 2</div>
+      </div>
+      
+      <div class = "item">
+         <img src = "http://www.tutorialspoint.com/bootstrap/images/slide3.png" alt = "Third slide"  style="max-height:400px;text-align:center">
+         <div class = "carousel-caption">This Caption 3</div>
+      </div>
+   </div>
+   
+   <!-- Carousel nav --> 
+   <a class = "carousel-control left" href = "#myCarousel" data-slide = "prev">&lsaquo;</a>
+   <a class = "carousel-control right" href = "#myCarousel" data-slide = "next">&rsaquo;</a>
+</div> 
+  
+  <div class="area odd">
+    <div class="container">
+      <div class="area-title">
+        <div class="area-title-name area-title-nameA"><a href="">推荐课程</a><em>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em><a href="">最新课程</a></div>
+        <div class="area-title-more">更多</div>
+      </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="area even">
+    <div class="container">
+        <div class="course-contain">
+          <div class="cat" style="background:#900900"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="area odd">
+    <div class="container">
+        <div class="course-contain">
+          <div class="cat" style="background:#20673F"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="area even">
+    <div class="container">
+        <div class="course-contain">
+          <div class="cat" style="background:#0064B7"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="area odd">
+    <div class="container">
+        <div class="course-contain">
+          <div class="cat" style="background:#257397"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="area even">
+    <div class="container">
+      <div class="area-title">
+        <div class="area-title-name">推荐讲师</div>
+        <div class="area-title-more">更多</div>
+      </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  <div class="area even">
+    <div class="container">
+      <div class="area-title">
+        <div class="area-title-name">合作机构</div>
+        <div class="area-title-more">更多</div>
+      </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain course-hidden-4 course-hidden-5">
+          <div class="course"></div>
+        </div>
+        <div class="course-contain">
+          <div class="course"></div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="bottom"></div>
 </body>
 <script type="text/javascript">
 	jwplayer.key = "5pcniCatLq4er9Y40pB9uiPEPVo3rxWLoqpQCw==";
@@ -60,6 +359,11 @@
 			client : "vast",
 			tag : "http://adserver.com/vastTag.xml"
 		}
+	});
+	$(function(){
+	$('#myCarousel').carousel({
+	    interval: false
+	});
 	});
 </script>
 </html>
