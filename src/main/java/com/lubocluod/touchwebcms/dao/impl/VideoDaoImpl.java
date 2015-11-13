@@ -30,15 +30,17 @@ public class VideoDaoImpl implements VideoDao {
     @Override
     public int add(Video v) {
         // TODO Auto-generated method stub
-        String sql = "INSERT INTO video(course_id,title,duration,desc,create_time,update_time) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO video(course_id,title,duration,video_uri,description,create_time,update_time) VALUES(?,?,?,?,?,?,?)";
         try {
+            int i = 1;
             stat = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-            stat.setInt(1, v.getCourseId());
-            stat.setString(2, v.getTitle());
-            stat.setInt(3, v.getDuration());
-            stat.setString(4, v.getDesc());
-            stat.setTimestamp(5, v.getCreateTime());
-            stat.setTimestamp(6, v.getUpdateTime());
+            stat.setInt(i++, v.getCourseId());
+            stat.setString(i++, v.getTitle());
+            stat.setInt(i++, v.getDuration());
+            stat.setString(i++, v.getVideoUri());
+            stat.setString(i++, v.getDesc());
+            stat.setTimestamp(i++, v.getCreateTime());
+            stat.setTimestamp(i++, v.getUpdateTime());
             stat.executeUpdate();
             ResultSet rs = stat.getGeneratedKeys();
             if (rs.next()) {
@@ -72,13 +74,16 @@ public class VideoDaoImpl implements VideoDao {
     @Override
     public boolean update(Video v) {
         // TODO Auto-generated method stub
-        String sql = "UPDATE video SET title=?,desc=?,update_time=? WHERE id=?";
+        String sql = "UPDATE video SET title=?,duration=?,video_uri=?,description=?,update_time=? WHERE id=?";
         try {
+            int i = 1;
             stat = conn.prepareStatement(sql);
-            stat.setString(1, v.getTitle());
-            stat.setString(2, v.getDesc());
-            stat.setTimestamp(3, v.getUpdateTime());
-            stat.setInt(4, v.getId());
+            stat.setString(i++, v.getTitle());
+            stat.setInt(i++, v.getDuration());
+            stat.setString(i++, v.getVideoUri());
+            stat.setString(i++, v.getDesc());
+            stat.setTimestamp(i++, v.getUpdateTime());
+            stat.setInt(i++, v.getId());
             stat.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -91,7 +96,7 @@ public class VideoDaoImpl implements VideoDao {
     @Override
     public Video find(int id) {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,course_id,title,desc,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video WHERE id=?";
+        String sql = "SELECT id,course_id,title,duration,video_uri,description,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video WHERE id=?";
         try {
             stat = conn.prepareStatement(sql);
             stat.setInt(1, id);
@@ -102,7 +107,9 @@ public class VideoDaoImpl implements VideoDao {
                 v.setId(rs.getInt("id"));
                 v.setCourseId(rs.getInt("course_id"));
                 v.setTitle(rs.getString("title"));
-                v.setDesc(rs.getString("desc"));
+                v.setDuration(rs.getInt("duration"));
+                v.setVideoUri(rs.getString("video_uri"));
+                v.setDesc(rs.getString("description"));
                 v.setCreateTime(rs.getTimestamp("create_time"));
                 v.setUpdateTime(rs.getTimestamp("update_time"));
                 v.setFavoriteCnt(rs.getInt("favorite_cnt"));
@@ -120,18 +127,20 @@ public class VideoDaoImpl implements VideoDao {
     @Override
     public List<Video> findCourseVideo(int courseId) {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,course_id,title,desc,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video WHERE course_id=?";
+        String sql = "SELECT id,course_id,title,duration,video_uri,desc,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video WHERE course_id=?";
         try {
             stat = conn.prepareStatement(sql);
             stat.setInt(1, courseId);
             ResultSet rs = stat.executeQuery();
             List<Video> list = new ArrayList<Video>();
             Video v = null;
-            if (rs.next()) {
+            while (rs.next()) {
                 v = new Video();
                 v.setId(rs.getInt("id"));
                 v.setCourseId(rs.getInt("course_id"));
                 v.setTitle(rs.getString("title"));
+                v.setDuration(rs.getInt("duration"));
+                v.setVideoUri(rs.getString("video_uri"));
                 v.setDesc(rs.getString("desc"));
                 v.setCreateTime(rs.getTimestamp("create_time"));
                 v.setUpdateTime(rs.getTimestamp("update_time"));
@@ -167,17 +176,19 @@ public class VideoDaoImpl implements VideoDao {
     @Override
     public List<Video> findAll() {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,course_id,title,desc,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video";
+        String sql = "SELECT id,course_id,title,duration,video_uri,description,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video";
         try {
             stat = conn.prepareStatement(sql);
             ResultSet rs = stat.executeQuery();
             List<Video> list = new ArrayList<Video>();
             Video v = null;
-            if (rs.next()) {
+            while (rs.next()) {
                 v = new Video();
                 v.setId(rs.getInt("id"));
                 v.setCourseId(rs.getInt("course_id"));
                 v.setTitle(rs.getString("title"));
+                v.setDuration(rs.getInt("duration"));
+                v.setVideoUri(rs.getString("video_uri"));
                 v.setDesc(rs.getString("desc"));
                 v.setCreateTime(rs.getTimestamp("create_time"));
                 v.setUpdateTime(rs.getTimestamp("update_time"));

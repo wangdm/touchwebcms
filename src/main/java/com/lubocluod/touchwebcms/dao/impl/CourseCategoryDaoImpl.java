@@ -115,7 +115,7 @@ public class CourseCategoryDaoImpl implements CourseCategoryDao {
             ResultSet rs = stat.executeQuery();
             List<CourseCategory> list = new ArrayList<CourseCategory>();
             CourseCategory cat = null;
-            if (rs.next()) {
+            while (rs.next()) {
                 cat = new CourseCategory();
                 cat.setCatId(rs.getInt("cat_id"));
                 cat.setCatName(rs.getString("cat_name"));

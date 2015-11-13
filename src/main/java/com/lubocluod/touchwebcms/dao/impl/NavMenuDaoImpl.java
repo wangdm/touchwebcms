@@ -109,13 +109,13 @@ public class NavMenuDaoImpl implements NavMenuDao {
     @Override
     public List<NavMenu> findAll() {
         // TODO Auto-generated method stub
-        String sql = "SELECT nav_id,nav_name,nav_url FROM navmenu";
+        String sql = "SELECT nav_id,nav_name,nav_url FROM navmenu ORDER BY nav_index";
         try {
             stat = conn.prepareStatement(sql);
             ResultSet rs = stat.executeQuery();
             List<NavMenu> list = new ArrayList<NavMenu>();
             NavMenu menu = null;
-            if (rs.next()) {
+            while (rs.next()) {
                 menu = new NavMenu();
                 menu.setNavId(rs.getInt("nav_id"));
                 menu.setNavName(rs.getString("nav_name"));

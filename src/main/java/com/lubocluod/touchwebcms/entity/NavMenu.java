@@ -4,6 +4,7 @@ public class NavMenu {
     int navId;
     String navName;
     String navUrl;
+    int navIndex;
 
     public int getNavId() {
         return navId;
@@ -27,5 +28,13 @@ public class NavMenu {
 
     public void setNavUrl(String navUrl) {
         this.navUrl = navUrl;
+    }
+
+    public int getNavIndex() {
+        return navIndex;
+    }
+
+    public void setNavIndex(int navIndex) {
+        this.navIndex = navIndex;
     }
 }

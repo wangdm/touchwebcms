@@ -7,6 +7,7 @@ public class Video {
     int courseId;
     String title;
     int duration;
+    String videoUri;
     String desc;
     private Timestamp createTime;
     private Timestamp updateTime;
@@ -44,6 +45,14 @@ public class Video {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getVideoUri() {
+        return videoUri;
+    }
+
+    public void setVideoUri(String videoUri) {
+        this.videoUri = videoUri;
     }
 
     public String getDesc() {

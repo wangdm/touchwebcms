@@ -118,7 +118,7 @@ public class CoursePropertyDaoImpl implements CoursePropertyDao {
             ResultSet rs = stat.executeQuery();
             List<CourseProperty> list = new ArrayList<CourseProperty>();
             CourseProperty prop = null;
-            if (rs.next()) {
+            while (rs.next()) {
                 prop = new CourseProperty();
                 prop.setPropId(rs.getInt("prop_id"));
                 prop.setCatId(rs.getInt("cat_id"));
