@@ -1,0 +1,54 @@
+.course_item{
+    width:80px;
+    height:20px;
+    overflow:hidden;
+    margin-left:20px;
+    margin-right:20px;
+    margin-top:15px;
+    vertical-align: text-bottom;
+    font-size: 16px;
+    color: #000000;
+    font-weight: normal;
+    float:left;
+}
+
+.course_statistics_value,.course_price_value,.course_status_value{
+    vertical-align: middle;
+    font-size: 30px;
+    color: #c40000;
+    font-weight: bolder;
+    font-style:italic;
+}
+
+.course_action_bar{
+    overflow:hidden;
+    margin-top:20px;
+}
+.course_action{
+    cursor:pointer;
+    padding:8px;
+    margin:0px 18px;
+    background-color:rgb(150,150,200);
+}
+
+.search_tags{
+    background-color:rgb(255,255,255);
+    min-height:100px;
+    margin-top:15px;
+    display:block;
+    overflow:hidden;
+}
+.search_order{
+    background-color:rgb(255,255,255);
+    height:46px;
+    margin:10px 0px;
+    display:block;
+    overflow:hidden;
+}
+.search_result{
+    background-color:rgb(255,255,255);
+    min-height:100px;
+    margin-bottom:15px;
+    display:block;
+    overflow:hidden;
+}

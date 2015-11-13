@@ -1,26 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
-<%!String username;%>
-<%!String fullname;%>
-<%!String email;%>
-<%!String phone;%>
+<%@ page import="com.lubocluod.touchwebcms.entity.Video"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.VideoDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.Course"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.NavMenu"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.NavMenuDaoImpl"%>
+
+<%@ page import="java.util.ArrayList"%>
 <%
-    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
+    String cururl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
     String query = request.getQueryString();
     if (query != null) 
     {
-        url += "?" + query; 
+        cururl += "?" + query; 
     }
     User user = (User) session.getAttribute("user");
-    if (null == user) {
-        response.sendRedirect("login.jsp?from=" + url);
-    } else {
-        username = user.getUsername();
-        fullname = user.getFullname();
-        email = user.getEmail();
-        phone = user.getPhone();
+    String tmpParam = request.getParameter("videoId");
+    if(tmpParam==null || "".equals(tmpParam)){
+        
     }
+    int videoId = Integer.parseInt(tmpParam);
+    VideoDaoImpl videoservice = new VideoDaoImpl();
+    Video video =  videoservice.find(videoId);
+    if(video == null)
+    {
+    }
+    CourseDaoImpl courseservice = new CourseDaoImpl();
+    Course course = courseservice.find(video.getCourseId());
 %>
 <!DOCTYPE HTML>
 <html>
@@ -121,12 +129,40 @@ margin: auto;
     style="min-height: 30px;">
     <div class="container" style="height: 30px;">
       <div style="line-height: 30px;">
+        <a style="float: left;" href="<%=application.getContextPath()%>">lubocloud.com</a>
+        <% 
+          if(user!=null && "wangdm".equals(user.getUsername())){
+        %>
+        <div style="float: left;">&nbsp;|&nbsp;</div>
         <a style="float: left;" href="setting.jsp">Setting</a>
+        <%
+        }
+        %>
       </div>
       <div style="line-height: 30px;">
+      <% 
+        if(user!=null){
+      %>
         <a style="float: right;" href="logout.jsp">Logout</a>
         <div style="float: right;">&nbsp;|&nbsp;</div>
-        <a style="float: right;" href="member.jsp"><%=username%></a>
+        <a style="float: right;" href="member.jsp">
+        <% 
+        if(null==user.getFullname()||"".equals(user.getFullname())){
+            out.print(user.getUsername());
+        }else{
+            out.print(user.getFullname());
+        }
+        %>
+        </a>
+        <%
+        }else{
+        %>
+        <a style="float: right;" href="register.jsp">Register</a>
+        <div style="float: right;">&nbsp;|&nbsp;</div>
+        <a style="float: right;" href="login.jsp">Login</a>
+        <%
+        }
+        %>
       </div>
     </div>
   </nav>
@@ -134,13 +170,35 @@ margin: auto;
   <div class="navmenu-bg">
     <div class="navmenu container">
       <ul>
+      <%
+         int parentId = -1; 
+         tmpParam = request.getParameter("parentId");
+         if(tmpParam!=null && !"".equals(tmpParam))
+         {
+             parentId = Integer.parseInt(tmpParam);
+         }
+         if(parentId<0){
+      %>
         <li><a class="selected" href="<%=application.getContextPath()%>">首页</a></li>
-        <li><a href="<%=application.getContextPath()%>">普教课程</a></li>
-        <li><a href="<%=application.getContextPath()%>">高校课程</a></li>
-        <li><a href="<%=application.getContextPath()%>">职业教育</a></li>
-        <li><a href="<%=application.getContextPath()%>">兴趣爱好</a></li>
-        <li><a href="<%=application.getContextPath()%>">全部课程</a></li>
-        <li><a href="<%=application.getContextPath()%>">讲师/机构</a></li>
+        <%
+         }else{
+        %>
+        <li><a href="<%=application.getContextPath()%>">首页</a></li>
+        <%
+            }
+            NavMenuDaoImpl menuservice = new NavMenuDaoImpl();
+            ArrayList<NavMenu> menulist = (ArrayList<NavMenu>)menuservice.findAll();
+            if(menulist!=null && !menulist.isEmpty()){
+                for(int i=0; i<menulist.size(); i++){
+                    NavMenu menu = menulist.get(i);
+                    if(cururl==menu.getNavUrl()){
+                        out.println("<li><a href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
+                    }else{
+                        out.println("<li><a class=\"selected\" href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
+                    }
+                }
+            }
+        %>
         <li style="float:right;padding:3px">
         <form name="search" action="search.jsp">
             <input name="keyword" type="search"  class="form-control" placeholder="Search Course"/>
@@ -152,8 +210,8 @@ margin: auto;
 
   <div class="container">
     <div class="col-sm-12 col-xs-12 video_head" style="padding:0px;">
-        <div class="video_nav"><a>首页</a> > <a>兴趣爱好</a> > <a>摄影</a> > <a href="course.jsp">beautiful-china</a></div>
-        <div class="video_title"><h2>beautiful-china</h2></div>
+        <div class="video_nav"><a>首页</a> > <a>兴趣爱好</a> > <a>摄影</a> > <a href="course.jsp?courseId=<%=course.getId()%>"><%=course.getName() %></a></div>
+        <div class="video_title"><h2><%=video.getTitle() %></h2></div>
     </div>
   </div>
   
@@ -202,12 +260,14 @@ margin: auto;
   
   <div class="bottom hidden-xs"></div>
   
+  <div id="goTop" style="position:fixed;right:20px;bottom:20px;z-index:100;width:36px;height:36px;background:#881;opacity:0.6;">
+  </div>
 </body>
 <script type="text/javascript">
     jwplayer.key = "5pcniCatLq4er9Y40pB9uiPEPVo3rxWLoqpQCw==";
     var playerInstance = jwplayer("player");
     playerInstance.setup({
-        file : "asset/jwplayer/Beautiful_China.mp4",
+        file : "<%=video.getVideoUri()%>",
         aspectratio : "16:9",
         width : "100%",
         height : 360,
@@ -224,6 +284,10 @@ margin: auto;
       $("#player_list").css("height", h);
       $("#taggle_list").css("height", h);
       
+      $("#goTop").on("click", function() {
+          $("html,body").animate({scrollTop:0}, 300);
+      });
+      
       $("#taggle_list").on("click", function() {
           $("#taggle_list").parent().toggleClass("col-sm-9");
           $("#taggle_list").parent().toggleClass("col-sm-12");
@@ -231,6 +295,7 @@ margin: auto;
           $("#player_list").parent().toggleClass("hidden-sm");
           h = $("#player").parent().width()*9/16;
           $("#taggle_list").css("height", h);
+          $("html,body").animate({scrollTop: $("#player").offset().top-35}, 300);
       });
       $(window).resize(function() {
           h = $("#player").parent().width()*9/16;

@@ -1,6 +1,7 @@
 body{
     background:rgb(233,233,233);
     font-family: 'Microsoft YaHei';
+    padding-top: 30px;
 }
 .navmenu-bg{
     height:40px;
@@ -39,9 +40,9 @@ body{
     width:100%;
 }
 .odd{
+    background:rgb(255,255,255);
 }
 .even{
-    background:rgb(235,235,235);
 }
 
 .area-title{

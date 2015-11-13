@@ -1,20 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
-<%!String username;%>
-<%!String fullname;%>
-<%!String email;%>
-<%!String phone;%>
+<%@ page import="com.lubocluod.touchwebcms.entity.NavMenu"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.NavMenuDaoImpl"%>
+<%@ page import="java.util.ArrayList"%>
 <%
+    String cururl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
+    String query = request.getQueryString();
+    if (query != null) 
+    {
+        cururl += "?" + query; 
+    }
 	User user = (User) session.getAttribute("user");
-	if (null == user) {
-		response.sendRedirect("login.jsp");
-	} else {
-		username = user.getUsername();
-		fullname = user.getFullname();
-		email = user.getEmail();
-		phone = user.getPhone();
-	}
 %>
 <!DOCTYPE HTML>
 <html>
@@ -34,12 +31,40 @@
     style="min-height: 30px;">
     <div class="container" style="height: 30px;">
       <div style="line-height: 30px;">
+        <a style="float: left;" href="<%=application.getContextPath()%>">lubocloud.com</a>
+        <% 
+          if(user!=null && "wangdm".equals(user.getUsername())){
+        %>
+        <div style="float: left;">&nbsp;|&nbsp;</div>
         <a style="float: left;" href="setting.jsp">Setting</a>
+        <%
+        }
+        %>
       </div>
       <div style="line-height: 30px;">
+      <% 
+        if(user!=null){
+      %>
         <a style="float: right;" href="logout.jsp">Logout</a>
         <div style="float: right;">&nbsp;|&nbsp;</div>
-        <a style="float: right;" href="member.jsp"><%=username%></a>
+        <a style="float: right;" href="member.jsp">
+        <% 
+        if(null==user.getFullname()||"".equals(user.getFullname())){
+            out.print(user.getUsername());
+        }else{
+            out.print(user.getFullname());
+        }
+        %>
+        </a>
+        <%
+        }else{
+        %>
+        <a style="float: right;" href="register.jsp">Register</a>
+        <div style="float: right;">&nbsp;|&nbsp;</div>
+        <a style="float: right;" href="login.jsp">Login</a>
+        <%
+        }
+        %>
       </div>
     </div>
   </nav>
@@ -47,13 +72,35 @@
   <div class="navmenu-bg">
     <div class="navmenu container">
       <ul>
+      <%
+         int parentId = -1; 
+         String tmpParam = request.getParameter("parentId");
+         if(tmpParam!=null && !"".equals(tmpParam))
+         {
+             parentId = Integer.parseInt(tmpParam);
+         }
+         if(parentId<0){
+      %>
         <li><a class="selected" href="<%=application.getContextPath()%>">首页</a></li>
-        <li><a href="<%=application.getContextPath()%>">普教课程</a></li>
-        <li><a href="<%=application.getContextPath()%>">高校课程</a></li>
-        <li><a href="<%=application.getContextPath()%>">职业教育</a></li>
-        <li><a href="<%=application.getContextPath()%>">兴趣爱好</a></li>
-        <li><a href="<%=application.getContextPath()%>">全部课程</a></li>
-        <li><a href="<%=application.getContextPath()%>">讲师/机构</a></li>
+        <%
+         }else{
+        %>
+        <li><a href="<%=application.getContextPath()%>">首页</a></li>
+        <%
+            }
+            NavMenuDaoImpl menuservice = new NavMenuDaoImpl();
+            ArrayList<NavMenu> menulist = (ArrayList<NavMenu>)menuservice.findAll();
+            if(menulist!=null && !menulist.isEmpty()){
+                for(int i=0; i<menulist.size(); i++){
+                    NavMenu menu = menulist.get(i);
+                    if(cururl.equals(menu.getNavUrl())){
+                        out.println("<li><a class=\"selected\" href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
+                    }else{
+                        out.println("<li><a href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
+                    }
+                }
+            }
+        %>
         <li style="float:right;padding:3px">
         <form name="search" action="search.jsp">
             <input name="keyword" type="search"  class="form-control" placeholder="Search Course"/>
@@ -346,24 +393,20 @@
   </div>
   
   <div class="bottom"></div>
+  
+  <div id="goTop" style="position:fixed;right:20px;bottom:20px;z-index:100;width:36px;height:36px;background:#881;opacity:0.6;">
+  </div>
+  
 </body>
 <script type="text/javascript">
-	jwplayer.key = "5pcniCatLq4er9Y40pB9uiPEPVo3rxWLoqpQCw==";
-	var playerInstance = jwplayer("myPlayer");
-	playerInstance.setup({
-		file : "asset/jwplayer/Beautiful_China.mp4",
-		aspectratio : "16:9",
-		width : "100%",
-		height : 360,
-		advertising : {
-			client : "vast",
-			tag : "http://adserver.com/vastTag.xml"
-		}
-	});
 	$(function(){
-	$('#myCarousel').carousel({
-	    interval: false
-	});
+    	$('#myCarousel').carousel({
+    	    interval: false
+    	});      
+	
+        $("#goTop").on("click", function() {
+            $("html,body").animate({scrollTop:0}, 300);
+        });
 	});
 </script>
 </html>

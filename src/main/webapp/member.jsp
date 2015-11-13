@@ -6,12 +6,14 @@
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.Channel"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.ChannelDaoImpl"%>
-<%!User user=null;%>
 <%
-    user = (User) session.getAttribute("user");
-    if (null == user) {
-        response.sendRedirect("login.jsp");
+    String cururl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
+    String query = request.getQueryString();
+    if (query != null) 
+    {
+        cururl += "?" + query; 
     }
+    User user = (User) session.getAttribute("user");
 %>
 <!DOCTYPE HTML>
 <html>
@@ -34,16 +36,45 @@
 <title></title>
 </head>
 <body style="padding-top: 31px;">
-  <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="min-height: 30px;">
+  <nav role="navigation" class="navbar navbar-default navbar-fixed-top"
+    style="min-height: 30px;">
     <div class="container" style="height: 30px;">
-    <div style="line-height: 30px;">
-    <a style="float: left;" href="<%=application.getContextPath() %>">lubocloud.com</a>
-    </div>
-    <div style="line-height: 30px;">
-    <a style="float: right;"  href="logout.jsp">Logout</a>
-    <div style="float: right;" >&nbsp;|&nbsp;</div>
-    <a style="float: right;"  href="member.jsp"><%=user.getUsername() %></a>
-    </div>
+      <div style="line-height: 30px;">
+        <a style="float: left;" href="<%=application.getContextPath()%>">lubocloud.com</a>
+        <% 
+          if(user!=null && "wangdm".equals(user.getUsername())){
+        %>
+        <div style="float: left;">&nbsp;|&nbsp;</div>
+        <a style="float: left;" href="setting.jsp">Setting</a>
+        <%
+        }
+        %>
+      </div>
+      <div style="line-height: 30px;">
+      <% 
+        if(user!=null){
+      %>
+        <a style="float: right;" href="logout.jsp">Logout</a>
+        <div style="float: right;">&nbsp;|&nbsp;</div>
+        <a style="float: right;" href="member.jsp">
+        <% 
+        if(null==user.getFullname()||"".equals(user.getFullname())){
+            out.print(user.getUsername());
+        }else{
+            out.print(user.getFullname());
+        }
+        %>
+        </a>
+        <%
+        }else{
+        %>
+        <a style="float: right;" href="register.jsp">Register</a>
+        <div style="float: right;">&nbsp;|&nbsp;</div>
+        <a style="float: right;" href="login.jsp">Login</a>
+        <%
+        }
+        %>
+      </div>
     </div>
   </nav>
   <div class="container">
