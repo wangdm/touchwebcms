@@ -2,7 +2,13 @@
     pageEncoding="UTF-8"%>
     <%
     session.invalidate();
-    response.sendRedirect("login.jsp");
+    String url = request.getHeader("Referer");
+    if(url==null || "".equals(url))
+    {
+        response.sendRedirect("login.jsp");
+    }else{
+        response.sendRedirect(url);
+    }
     %>
 <!DOCTYPE HTML>
 <html>
