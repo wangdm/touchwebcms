@@ -125,7 +125,7 @@ margin: auto;
           if(user!=null && "wangdm".equals(user.getUsername())){
         %>
         <div style="float: left;">&nbsp;|&nbsp;</div>
-        <a style="float: left;" href="setting.jsp">Setting</a>
+        <a style="float: left;" href="admin/setting.jsp">Setting</a>
         <%
         }
         %>

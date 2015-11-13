@@ -14,6 +14,12 @@
         cururl += "?" + query; 
     }
     User user = (User) session.getAttribute("user");
+    if(user==null)
+    {
+        response.sendRedirect("login.jsp?from=" + cururl);
+        return;
+    }else{
+    }
 %>
 <!DOCTYPE HTML>
 <html>
@@ -45,7 +51,7 @@
           if(user!=null && "wangdm".equals(user.getUsername())){
         %>
         <div style="float: left;">&nbsp;|&nbsp;</div>
-        <a style="float: left;" href="setting.jsp">Setting</a>
+        <a style="float: left;" href="admin/setting.jsp">Setting</a>
         <%
         }
         %>

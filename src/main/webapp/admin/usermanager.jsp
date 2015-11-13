@@ -5,19 +5,17 @@
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.Role"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.RoleDaoImpl"%>
-<%!String username = "sssss";%>
 <%
-    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
+    String cururl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
     String query = request.getQueryString();
     if (query != null) 
     {
-        url += "?" + query; 
+        cururl += "?" + query; 
     }
     User user = (User) session.getAttribute("user");
     if (null == user) {
-        response.sendRedirect("login.jsp?from=" + url);
-    } else {
-        username = user.getFullname();
+        response.sendRedirect("../login.jsp?from=" + cururl);
+        return;
     }
 %>
 <!DOCTYPE HTML>
@@ -25,30 +23,54 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="asset/css/jquery-ui.css">
-<link rel="stylesheet" href="asset/css/jquery-ui.structure.css">
-<link rel="stylesheet" href="asset/css/jquery-ui.theme.css">
-<link rel="stylesheet" href="asset/css/bootstrap.css">
-<link rel="stylesheet" href="asset/css/bootstrap-theme.css">
-<script type="text/javascript" src="asset/js/jquery-2.1.4.js"></script>
-<script type="text/javascript" src="asset/js/jquery-ui.js"></script>
-<script type="text/javascript" src="asset/js/bootstrap.js"></script>
+<link rel="stylesheet" href="../asset/css/jquery-ui.css">
+<link rel="stylesheet" href="../asset/css/jquery-ui.structure.css">
+<link rel="stylesheet" href="../asset/css/jquery-ui.theme.css">
+<link rel="stylesheet" href="../asset/css/bootstrap.css">
+<link rel="stylesheet" href="../asset/css/bootstrap-theme.css">
+<script type="text/javascript" src="../asset/js/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="../asset/js/jquery-ui.js"></script>
+<script type="text/javascript" src="../asset/js/bootstrap.js"></script>
 <title>User Manager</title>
 </head>
 <body style="padding-top: 31px;">
+
   <nav role="navigation" class="navbar navbar-default navbar-fixed-top"
     style="min-height: 30px;">
     <div class="container" style="height: 30px;">
       <div style="line-height: 30px;">
         <a style="float: left;" href="<%=application.getContextPath()%>">lubocloud.com</a>
+        <% 
+          if(user!=null && "wangdm".equals(user.getUsername())){
+        %>
+        <div style="float: left;">&nbsp;|&nbsp;</div>
+        <a style="float: left;" href="setting.jsp">Setting</a>
+        <%
+        }
+        %>
       </div>
       <div style="line-height: 30px;">
-        <a style="float: right;" href="logout.jsp">Logout</a>
+      <% 
+        if(user!=null){
+      %>
+        <a style="float: right;" href="../logout.jsp">Logout</a>
         <div style="float: right;">&nbsp;|&nbsp;</div>
-        <a style="float: right;" href="member.jsp"><%=username%></a>
+        <a style="float: right;" href="../member.jsp">
+        <% 
+        if(null==user.getFullname()||"".equals(user.getFullname())){
+            out.print(user.getUsername());
+        }else{
+            out.print(user.getFullname());
+        }
+        %>
+        </a>
+        <%
+        }
+        %>
       </div>
     </div>
   </nav>
+  
   <div class="container">
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="usermanager.jsp">User</a></li>
