@@ -18,7 +18,6 @@
     {
         response.sendRedirect("login.jsp?from=" + cururl);
         return;
-    }else{
     }
 %>
 <!DOCTYPE HTML>
@@ -62,24 +61,11 @@
       %>
         <a style="float: right;" href="logout.jsp">Logout</a>
         <div style="float: right;">&nbsp;|&nbsp;</div>
-        <a style="float: right;" href="member.jsp">
-        <% 
-        if(null==user.getFullname()||"".equals(user.getFullname())){
-            out.print(user.getUsername());
-        }else{
-            out.print(user.getFullname());
-        }
-        %>
+        <a style="float: right;" href="member.jsp"><%=user.getFullname() %>
         </a>
-        <%
-        }else{
-        %>
-        <a style="float: right;" href="register.jsp">Register</a>
-        <div style="float: right;">&nbsp;|&nbsp;</div>
-        <a style="float: right;" href="login.jsp">Login</a>
-        <%
+      <%
         }
-        %>
+      %>
       </div>
     </div>
   </nav>
