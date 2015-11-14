@@ -130,4 +130,64 @@ public class CourseCategoryDaoImpl implements CourseCategoryDao {
         return null;
     }
 
+    @Override
+    public List<CourseCategory> findChildCategory(int id) {
+        // TODO Auto-generated method stub
+        String sql = "SELECT cat_id,cat_name,parent_id FROM coursecategory WHERE parent_id=?";
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setInt(1, id);
+            ResultSet rs = stat.executeQuery();
+            List<CourseCategory> list = new ArrayList<CourseCategory>();
+            CourseCategory cat = null;
+            while (rs.next()) {
+                cat = new CourseCategory();
+                cat.setCatId(rs.getInt("cat_id"));
+                cat.setCatName(rs.getString("cat_name"));
+                cat.setParentId(rs.getInt("parent_id"));
+                list.add(cat);
+            }
+            return list;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<CourseCategory> findParentCategory(int id) {
+        // TODO Auto-generated method stub
+        String sql = "SELECT cat_id,cat_name,parent_id FROM coursecategory WHERE cat_id=?";
+        List<CourseCategory> list = new ArrayList<CourseCategory>();
+        CourseCategory cat = null;
+        int tmpId = id;
+        try {
+            while(true){
+                stat = conn.prepareStatement(sql);
+                stat.setInt(1, tmpId);
+                ResultSet rs = stat.executeQuery();
+                if (rs.next()) {
+                    cat = new CourseCategory();
+                    cat.setCatId(rs.getInt("cat_id"));
+                    cat.setCatName(rs.getString("cat_name"));
+                    cat.setParentId(rs.getInt("parent_id"));
+                    list.add(cat);
+                }else{
+                    break;
+                }
+                if(cat.getParentId()==0)
+                {
+                    break;
+                }
+                tmpId = cat.getParentId();
+            }
+            return list;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
