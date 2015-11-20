@@ -33,7 +33,12 @@ public class CourseCategoryDaoImplTest {
 
     @Test
     public void testFindAll() {
-        fail("Not yet implemented");
+        CourseCategoryDao test = new CourseCategoryDaoImpl();
+        ArrayList<CourseCategory> list = (ArrayList<CourseCategory>)test.findAll();
+        for(int i=0; i<list.size(); i++)
+        {
+            System.out.println("id:"+list.get(i).getCatId()+"\tname:"+list.get(i).getCatName()+"\tparentId:"+list.get(i).getParentId());
+        }
     }
 
     @Test
@@ -42,7 +47,18 @@ public class CourseCategoryDaoImplTest {
         ArrayList<CourseCategory> list = (ArrayList<CourseCategory>)test.findChildCategory(1);
         for(int i=0; i<list.size(); i++)
         {
-            System.out.println("id:"+list.get(i).getCatId()+"\tname:"+list.get(i).getCatName());
+            System.out.println("id:"+list.get(i).getCatId()+"\tname:"+list.get(i).getCatName()+"\tparentId:"+list.get(i).getParentId());
+        }
+        
+    }
+
+    @Test
+    public void testFindAllChildCategory() {
+        CourseCategoryDao test = new CourseCategoryDaoImpl();
+        ArrayList<CourseCategory> list = (ArrayList<CourseCategory>)test.findChildCategory(2);
+        for(int i=0; i<list.size(); i++)
+        {
+            System.out.println("id:"+list.get(i).getCatId()+"\tname:"+list.get(i).getCatName()+"\tparentId:"+list.get(i).getParentId());
         }
         
     }
@@ -53,7 +69,7 @@ public class CourseCategoryDaoImplTest {
         ArrayList<CourseCategory> list = (ArrayList<CourseCategory>)test.findParentCategory(23);
         for(int i=0; i<list.size(); i++)
         {
-            System.out.println("id:"+list.get(i).getCatId()+"\tname:"+list.get(i).getCatName());
+            System.out.println("id:"+list.get(i).getCatId()+"\tname:"+list.get(i).getCatName()+"\tparentId:"+list.get(i).getParentId());
         }
         
     }

@@ -11,6 +11,7 @@ public interface CoursePropertyGroupDao {
     public boolean update(CoursePropertyGroup propGroup);
     public CoursePropertyGroup find(int id);
     public List<CoursePropertyGroup> findAll();
+    public CoursePropertyGroup findCoursePropertyNavGroup(int catId);
     public List<CoursePropertyGroup> findCoursePropertyGroup(int catId);
     public boolean deleteCoursePropertyGroup(int catId);
 }

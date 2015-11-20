@@ -1,7 +1,5 @@
 package com.lubocluod.touchwebcms.dao.impl;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 
 import org.junit.Test;

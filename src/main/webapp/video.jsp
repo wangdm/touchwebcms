@@ -2,6 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.Video"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.VideoDao"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.VideoDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.Course"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseDaoImpl"%>
@@ -19,11 +20,11 @@
     User user = (User) session.getAttribute("user");
     String tmpParam = request.getParameter("videoId");
     if(tmpParam==null || "".equals(tmpParam)){
-        
+        tmpParam = "2";
     }
     int videoId = Integer.parseInt(tmpParam);
-    VideoDaoImpl videoservice = new VideoDaoImpl();
-    Video video =  videoservice.find(videoId);
+    VideoDao videoDao = new VideoDaoImpl();
+    Video video =  videoDao.find(videoId);
     if(video == null)
     {
     }
@@ -50,10 +51,23 @@
     height:90px;
 }
 .video_nav{
+    font-size:15px;
     margin:8px 0px 8px 10px;
+    line-height: 30px;
+}
+.video_nav a{
+    cursor:pointer;
+    padding: 2px 5px;
+    color:#000000;
+}
+.video_nav a:hover{
+    color:#337ab7;
 }
 .video_title{
     margin-left:10px;
+}
+.video_title h2{
+    margin-top:10px;
 }
 
 .player_wrap{
@@ -185,19 +199,19 @@ margin: auto;
         %>
         <li><a href="<%=application.getContextPath()%>">首页</a></li>
         <%
-            }
-            NavMenuDaoImpl menuservice = new NavMenuDaoImpl();
-            ArrayList<NavMenu> menulist = (ArrayList<NavMenu>)menuservice.findAll();
-            if(menulist!=null && !menulist.isEmpty()){
-                for(int i=0; i<menulist.size(); i++){
-                    NavMenu menu = menulist.get(i);
-                    if(cururl==menu.getNavUrl()){
-                        out.println("<li><a href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
-                    }else{
-                        out.println("<li><a class=\"selected\" href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
-                    }
+        }
+        NavMenuDaoImpl menuservice = new NavMenuDaoImpl();
+        ArrayList<NavMenu> menulist = (ArrayList<NavMenu>)menuservice.findAll();
+        if(menulist!=null && !menulist.isEmpty()){
+            for(int i=0; i<menulist.size(); i++){
+                NavMenu menu = menulist.get(i);
+                if(cururl==menu.getNavUrl()){
+                    out.println("<li><a class=\"selected\" href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
+                }else{
+                    out.println("<li><a href=\""+menu.getNavUrl()+"\">"+menu.getNavName()+"</a></li>");
                 }
             }
+        }
         %>
         <li style="float:right;padding:3px">
         <form name="search" action="search.jsp">
@@ -226,18 +240,17 @@ margin: auto;
       <div id="player_list">
           <div class="player_list_title">播放列表</div>
           <ul class="player_list_item">
-            <li>111111111111111111111111</li>
-            <li>222222222222222222222222</li>
-            <li>333333333333333333333333</li>
-            <li>111111111111111111111111</li>
-            <li>222222222222222222222222</li>
-            <li>333333333333333333333333</li>
-            <li>111111111111111111111111</li>
-            <li>222222222222222222222222</li>
-            <li>333333333333333333333333</li>
-            <li>111111111111111111111111</li>
-            <li>222222222222222222222222</li>
-            <li>333333333333333333333333</li>
+         <%
+         ArrayList<Video> videolist = (ArrayList<Video>)videoDao.findCourseVideo(video.getCourseId());
+         if(videolist!=null && videolist.size()>0)
+         {
+             for(int i=0; i<videolist.size(); i++)
+             {
+                 Video tmpVideo = videolist.get(i);
+                 out.println("<li><a href=\""+application.getContextPath()+"/video.jsp?videoId="+tmpVideo.getId()+"\">"+tmpVideo.getTitle()+"</a></li>");
+             }
+         }
+         %>
           </ul>
       </div>
     </div>
@@ -260,7 +273,7 @@ margin: auto;
   
   <div class="bottom hidden-xs"></div>
   
-  <div id="goTop" style="position:fixed;right:20px;bottom:20px;z-index:100;width:36px;height:36px;background:#881;opacity:0.6;">
+  <div id="goTop"><a></a>
   </div>
 </body>
 <script type="text/javascript">

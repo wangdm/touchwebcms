@@ -3,21 +3,60 @@ package com.lubocluod.touchwebcms.entity;
 import java.sql.Timestamp;
 
 public class Course {
+    
+    public enum CourseStatus{
+        REVIEW(0),UPCOMING(1),ONGOING(2),LIVING(3),FINISH(4),BLOCK(5);
+        private CourseStatus(int val){
+            this.val = val;
+        }
+        private int val;
+        public int getValue(){
+            return this.val;
+        }
+        public String toString(){
+            switch(this.val){
+            case 0:return "REVIEW";
+            case 1:return "UPCOMING";
+            case 2:return "ONGOING";
+            case 3:return "LIVING";
+            case 4:return "FINISH";
+            case 5:return "BLOCK";
+            default:return "REVIEW";
+            }
+        }
+        public static CourseStatus valueOf(int val){
+            switch(val){
+            case 0:return REVIEW;
+            case 1:return UPCOMING;
+            case 2:return ONGOING;
+            case 3:return LIVING;
+            case 4:return FINISH;
+            case 5:return BLOCK;
+            default:return null;
+            }
+        }
+    }
+    
     int id;
     int uid;
+    int aid;
     int catId;
     String name;
     int price;
-    String Desc;
+    String desc;
+    String detail;
     String logo;
     String adimage;
     String property;
     private Timestamp createTime;
     private Timestamp updateTime;
     private Timestamp modifyTime;
+    int grade;
+    int gradeCnt;
     int favoriteCnt;
     int greatCnt;
     int studyCnt;
+    CourseStatus status;
 
     public int getId() {
         return id;
@@ -33,6 +72,14 @@ public class Course {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    public int getAid() {
+        return aid;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
     }
 
     public int getCatId() {
@@ -60,11 +107,19 @@ public class Course {
     }
 
     public String getDesc() {
-        return Desc;
+        return desc;
     }
 
     public void setDesc(String desc) {
-        Desc = desc;
+        this.desc = desc;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getLogo() {
@@ -115,6 +170,22 @@ public class Course {
         this.modifyTime = modifyTime;
     }
 
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public int getGradeCnt() {
+        return gradeCnt;
+    }
+
+    public void setGradeCnt(int gradeCnt) {
+        this.gradeCnt = gradeCnt;
+    }
+
     public int getFavoriteCnt() {
         return favoriteCnt;
     }
@@ -137,5 +208,13 @@ public class Course {
 
     public void setStudyCnt(int studyCnt) {
         this.studyCnt = studyCnt;
+    }
+
+    public CourseStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CourseStatus status) {
+        this.status = status;
     }
 }

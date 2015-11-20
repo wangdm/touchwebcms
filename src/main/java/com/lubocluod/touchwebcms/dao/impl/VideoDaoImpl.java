@@ -127,7 +127,7 @@ public class VideoDaoImpl implements VideoDao {
     @Override
     public List<Video> findCourseVideo(int courseId) {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,course_id,title,duration,video_uri,desc,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video WHERE course_id=?";
+        String sql = "SELECT id,course_id,title,duration,video_uri,description,create_time,update_time,favorite_cnt,great_cnt,play_cnt FROM video WHERE course_id=?";
         try {
             stat = conn.prepareStatement(sql);
             stat.setInt(1, courseId);
@@ -141,7 +141,7 @@ public class VideoDaoImpl implements VideoDao {
                 v.setTitle(rs.getString("title"));
                 v.setDuration(rs.getInt("duration"));
                 v.setVideoUri(rs.getString("video_uri"));
-                v.setDesc(rs.getString("desc"));
+                v.setDesc(rs.getString("description"));
                 v.setCreateTime(rs.getTimestamp("create_time"));
                 v.setUpdateTime(rs.getTimestamp("update_time"));
                 v.setFavoriteCnt(rs.getInt("favorite_cnt"));

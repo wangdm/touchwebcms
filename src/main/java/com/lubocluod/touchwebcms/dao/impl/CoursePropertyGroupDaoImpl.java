@@ -216,4 +216,28 @@ public class CoursePropertyGroupDaoImpl implements CoursePropertyGroupDao {
         return false;
     }
 
+    @Override
+    public CoursePropertyGroup findCoursePropertyNavGroup(int catId) {
+        // TODO Auto-generated method stub
+        String sql = "SELECT prop_group_id,prop_group_name,cat_id FROM coursepropertygroup WHERE cat_id=? AND prop_nav=1";
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setInt(1, catId);
+            ResultSet rs = stat.executeQuery();
+            CoursePropertyGroup propGroup = null;
+            if (rs.next()) {
+                propGroup = new CoursePropertyGroup();
+                propGroup.setPropGroupId(rs.getInt("prop_group_id"));
+                propGroup.setCatId(rs.getInt("cat_id"));
+                propGroup.setPropGroupName(rs.getString("prop_group_name"));
+                propGroup.setItemList((ArrayList<CoursePropertyItem>)propItemDao.findCoursePropertyItem(rs.getInt("prop_group_id")));
+            }
+            return propGroup;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

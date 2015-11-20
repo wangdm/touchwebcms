@@ -1,8 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.User"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.UserDao"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.NavMenu"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.NavMenuDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.CourseCategoryDao"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.CourseCategory"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseCategoryDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.CoursePropertyGroupDao"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.CoursePropertyGroup"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.CoursePropertyGroupDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.CoursePropertyItemDao"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.CoursePropertyItem"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.CoursePropertyItemDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.CourseDao"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.Course"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseDaoImpl"%>
 <%@ page import="java.util.ArrayList"%>
 <%
     String cururl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
@@ -148,196 +162,246 @@
         <div class="area-title-name area-title-nameA"><a href="">推荐课程</a><em>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em><a href="">最新课程</a></div>
         <div class="area-title-more">更多</div>
       </div>
-        <div class="course-contain">
-          <div class="course"></div>
+      <%
+      {
+      String tmpStr = request.getParameter("parentId");
+      int parentCatId = 0;
+      if(tmpStr != null && !"".equals(tmpStr))
+      {
+          parentCatId = Integer.parseInt(tmpStr);
+      }
+      CourseDao courseDao = new CourseDaoImpl();
+      ArrayList<Course> courselist = (ArrayList<Course>)courseDao.findCoursebyCategory(parentCatId);
+      for(int j=0; j<8; j++)
+      {
+      %>
+      <div class="course-contain<%if(j>=5)out.print(" course-hidden-2");if(j>=5)out.print(" course-hidden-3");if(j>=4)out.print(" course-hidden-1"); %>">
+      <%
+          if(j<courselist.size())
+          {
+              Course course = courselist.get(j);
+              UserDao courseUserDao = new UserDaoImpl();
+              User courseUser = courseUserDao.find(course.getUid());
+              String showUserName = null;
+              if(!"".equals(courseUser.getFullname()))
+              {
+                  showUserName = courseUser.getFullname();
+              }else{
+                  showUserName = courseUser.getUsername();
+              }
+      %>
+        <div class="course">
+          <div class="course-img">
+            <a href="<%=application.getContextPath()%>/course.jsp?courseId=<%=course.getId() %>"><img alt="<%=course.getName() %>" src="<%=course.getLogo()%>"/></a>
+            <div class="course-title-bg"></div>
+            <div class="course-title-name"><a href="<%=application.getContextPath()%>/course.jsp?courseId=<%=course.getId() %>"><%=course.getName() %></a></div>
+         </div>
+          <div class="course-info">
+            <div class="course-owner">
+              <div class="course-person"><span class="course-person-item">讲师：</span><span class="course-person-value"><a href="<%=application.getContextPath()%>/member.jsp?uid=<%=courseUser.getId()%>"><%=showUserName %></a></span></div>
+              <div class="course-agency"><span class="course-agency-item">机构：</span><span class="course-agency-value"><a href="<%=application.getContextPath()%>/member.jsp?uid=<%=courseUser.getId()%>"><%=showUserName %></a></span></div>
+            </div>
+            <div class="course-price"><%if(course.getPrice()<=0){out.print("<span class=\"course-price-free\">免费</span>");}else{out.print("<span class=\"course-price-value\">¥"+course.getPrice()+"</span>");} %></div>
+          </div>
+          <div class="course-stat">
+            <div class="course-grade">
+              <div class="course-grade-img">
+                <div class="course-grade-value" style="width:<%=course.getGrade() %>%;"></div>
+              </div>
+              <div class="course-grade-num"><% out.print(((float)course.getGrade())/10); %></div>
+            </div>
+            <div class="course-study"><span class="course-study-value"><%=course.getStudyCnt() %></span><span class="course-study-item">人学习</span></div>
+          </div>
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+      <%
+          }else{
+      %>
+        <div class="course">
+          <div class="course-img">
+          <a href="<%=application.getContextPath()%>/course.jsp"><img src="asset/image/lubocloud.jpg"/></a>
+            <div class="course-title-bg"></div>
+          </div>
+          <div class="course-info">
+            <div class="course-owner">
+              <div class="course-person"><span class="course-person-item">讲师：</span><span class="course-person-value"><a>admin</a></span></div>
+              <div class="course-agency"><span class="course-agency-item">机构：</span><span class="course-agency-value"><a>Lubocloud</a></span></div>
+            </div>
+            <div class="course-price"><span class="course-price-free">免费</span></div>
+          </div>
+          <div class="course-stat">
+            <div class="course-grade">
+              <div class="course-grade-img">
+                <div class="course-grade-value" style="width:50%;"></div>
+              </div>
+              <div class="course-grade-num">5.0</div>
+            </div>
+            <div class="course-study"><span class="course-study-value">0</span><span class="course-study-item">人学习</span></div>
+          </div>
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
+      <%
+          }
+      %>
+      </div>
+      <%
+      }
+      }
+      %>
     </div>
   </div>
   
-  <div class="area even">
+  <%
+  String tmpStr = request.getParameter("parentId");
+  int parentCatId = 0;
+  if(tmpStr != null && !"".equals(tmpStr))
+  {
+      parentCatId = Integer.parseInt(tmpStr);
+  }
+  CourseCategoryDao catDao = new CourseCategoryDaoImpl();
+  ArrayList<CourseCategory> catlist = (ArrayList<CourseCategory>)catDao.findChildCategory(parentCatId);
+  String color[] = {"#900900","#20673F","#0064B7","#257397",};
+  for(int i=0; i<catlist.size(); i++)
+  {
+      CourseCategory cat = catlist.get(i);
+  %>
+  <div id="cat_<%=cat.getCatId() %>" class="area <%if(i%2==0){out.print("even");}else{out.print("odd");} %>">
     <div class="container">
-        <div class="course-contain">
-          <div class="cat" style="background:#900900"></div>
+      <div class="course-contain">
+        <div class="cat" style="background:<%=color[i%4] %>">
+      <%
+      if(parentCatId<=0)
+      {
+      %>
+          <div class="cat-parent"><h2><a href="<%=application.getContextPath()%>?parentId=<%=cat.getCatId()%>"><%=cat.getCatName() %></a></h2></div>
+          <div class="cat-child">
+            <ul>
+          <%
+          CourseCategoryDao childCatDao = new CourseCategoryDaoImpl();
+          ArrayList<CourseCategory> childCatlist = (ArrayList<CourseCategory>)childCatDao.findChildCategory(cat.getCatId());
+          for(int j=0; j<childCatlist.size(); j++)
+          {
+              CourseCategory childCat = childCatlist.get(j);
+          
+          %>
+              <li class="cat-child-item"><a href="<%=application.getContextPath()%>?parentId=<%=cat.getCatId()%>#cat_<%=childCat.getCatId() %>"><%=childCat.getCatName() %></a></li>
+          <%
+          }
+          %>
+            </ul>
+          </div>
+      <%
+      }else{
+      %>
+          <div class="cat-parent"><h2><a href="<%=application.getContextPath()%>/course.jsp?parentId=<%=cat.getCatId()%>"><%=cat.getCatName() %></a></h2></div>
+          <div class="cat-prop">
+            <ul>
+          <%
+          CoursePropertyGroupDao propGroupDao = new CoursePropertyGroupDaoImpl();
+          CoursePropertyGroup propGroup = propGroupDao.findCoursePropertyNavGroup(cat.getCatId());
+          if(propGroup != null)
+          {
+              CoursePropertyItemDao propItemDao = new CoursePropertyItemDaoImpl();
+              ArrayList<CoursePropertyItem> propItemlist = (ArrayList<CoursePropertyItem>)propItemDao.findCoursePropertyItem(propGroup.getPropGroupId());
+              for(int j=0; j<propItemlist.size(); j++)
+              {
+                  CoursePropertyItem propItem = propItemlist.get(j);
+          %>
+              <li class="cat-prop-item"><a href="<%=application.getContextPath()%>/course.jsp?parentId=<%=cat.getCatId()%>&property_tags=<%=propItem.getPropItemName()%>"><%=propItem.getPropItemName() %></a></li>
+          <%
+              }
+          }
+          %>
+            </ul>
+          </div>
+      <%
+      }
+      %>
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+      </div>
+      
+      <%
+      {
+      CourseDao courseDao = new CourseDaoImpl();
+      ArrayList<Course> courselist = (ArrayList<Course>)courseDao.findCoursebyCategory(cat.getCatId());
+      for(int j=0; j<7; j++)
+      {
+      %>
+      <div class="course-contain<%if(j>=5)out.print(" course-hidden-2");if(j>=5)out.print(" course-hidden-3");if(j>=4)out.print(" course-hidden-1"); %>">
+      <%
+          if(j<courselist.size())
+          {
+              Course course = courselist.get(j);
+              UserDao courseUserDao = new UserDaoImpl();
+              User courseUser = courseUserDao.find(course.getUid());
+              String showUserName = null;
+              if(!"".equals(courseUser.getFullname()))
+              {
+                  showUserName = courseUser.getFullname();
+              }else{
+                  showUserName = courseUser.getUsername();
+              }
+      %>
+        <div class="course">
+          <div class="course-img">
+            <a href="<%=application.getContextPath()%>/course.jsp?courseId=<%=course.getId() %>"><img src="<%=course.getLogo()%>"/></a>
+            <div class="course-title-bg"></div>
+            <div class="course-title-name"><a href="<%=application.getContextPath()%>/course.jsp?courseId=<%=course.getId() %>"><%=course.getName() %></a></div>
+         </div>
+          <div class="course-info">
+            <div class="course-owner">
+              <div class="course-person"><span class="course-person-item">讲师：</span><span class="course-person-value"><a href="<%=application.getContextPath()%>/member.jsp?uid=<%=courseUser.getId()%>"><%=showUserName %></a></span></div>
+              <div class="course-agency"><span class="course-agency-item">机构：</span><span class="course-agency-value"><a href="<%=application.getContextPath()%>/member.jsp?uid=<%=courseUser.getId()%>"><%=showUserName %></a></span></div>
+            </div>
+            <div class="course-price"><%if(course.getPrice()<=0){out.print("<span class=\"course-price-free\">免费</span>");}else{out.print("<span class=\"course-price-value\">¥"+course.getPrice()+"</span>");} %></div>
+          </div>
+          <div class="course-stat">
+            <div class="course-grade">
+              <div class="course-grade-img">
+                <div class="course-grade-value" style="width:<%=course.getGrade() %>%;"></div>
+              </div>
+              <div class="course-grade-num"><% out.print(((float)course.getGrade())/10); %></div>
+            </div>
+            <div class="course-study"><span class="course-study-value"><%=course.getStudyCnt() %></span><span class="course-study-item">人学习</span></div>
+          </div>
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+      <%
+          }else{
+      %>
+        <div class="course">
+          <div class="course-img">
+          <a href="<%=application.getContextPath()%>/course.jsp"><img src="asset/image/lubocloud.jpg"/></a>
+            <div class="course-title-bg"></div>
+          </div>
+          <div class="course-info">
+            <div class="course-owner">
+              <div class="course-person"><span class="course-person-item">讲师：</span><span class="course-person-value"><a>admin</a></span></div>
+              <div class="course-agency"><span class="course-agency-item">机构：</span><span class="course-agency-value"><a>Lubocloud</a></span></div>
+            </div>
+            <div class="course-price"><span class="course-price-free">免费</span></div>
+          </div>
+          <div class="course-stat">
+            <div class="course-grade">
+              <div class="course-grade-img">
+                <div class="course-grade-value" style="width:50%;"></div>
+              </div>
+              <div class="course-grade-num">5.0</div>
+            </div>
+            <div class="course-study"><span class="course-study-value">0</span><span class="course-study-item">人学习</span></div>
+          </div>
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
+      <%
+          }
+      %>
+      </div>
+      <%
+      }
+      }
+      %>
+      
     </div>
   </div>
-  
-  <div class="area odd">
-    <div class="container">
-        <div class="course-contain">
-          <div class="cat" style="background:#20673F"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-    </div>
-  </div>
-  
-  <div class="area even">
-    <div class="container">
-        <div class="course-contain">
-          <div class="cat" style="background:#0064B7"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-    </div>
-  </div>
-  
-  <div class="area odd">
-    <div class="container">
-        <div class="course-contain">
-          <div class="cat" style="background:#257397"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
-        </div>
-    </div>
-  </div>
+  <%
+  }
+  %>
   
   <div class="area even">
     <div class="container">
@@ -345,23 +409,17 @@
         <div class="area-title-name">推荐讲师</div>
         <div class="area-title-more">更多</div>
       </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="lecturer-wrap">
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="lecturer-wrap">
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="lecturer-wrap">
         </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
+        <div class="lecturer-wrap course-hidden-4">
         </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
+        <div class="lecturer-wrap course-hidden-4 course-hidden-5">
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="lecturer-wrap">
         </div>
     </div>
   </div>
@@ -371,30 +429,24 @@
         <div class="area-title-name">合作机构</div>
         <div class="area-title-more">更多</div>
       </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="agency-wrap">
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="agency-wrap">
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="agency-wrap">
         </div>
-        <div class="course-contain course-hidden-4">
-          <div class="course"></div>
+        <div class="agency-wrap course-hidden-4">
         </div>
-        <div class="course-contain course-hidden-4 course-hidden-5">
-          <div class="course"></div>
+        <div class="agency-wrap course-hidden-4 course-hidden-5">
         </div>
-        <div class="course-contain">
-          <div class="course"></div>
+        <div class="agency-wrap">
         </div>
     </div>
   </div>
   
   <div class="bottom"></div>
   
-  <div id="goTop" style="position:fixed;right:20px;bottom:20px;z-index:100;width:36px;height:36px;background:#881;opacity:0.6;">
+  <div id="goTop"><a></a>
   </div>
   
 </body>
@@ -404,6 +456,14 @@
     	    interval: false
     	});      
 	
+    	$(".course").on("mouseover", function(){
+    	    $(this).addClass("course-hover");
+    	});   
+    
+        $(".course").on("mouseout", function(){
+            $(this).removeClass("course-hover");
+        });
+    	
         $("#goTop").on("click", function() {
             $("html,body").animate({scrollTop:0}, 300);
         });

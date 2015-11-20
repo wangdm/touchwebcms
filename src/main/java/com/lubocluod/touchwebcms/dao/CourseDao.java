@@ -11,4 +11,5 @@ public interface CourseDao {
     public boolean update(Course c);
     public Course find(int id);
     public List<Course> findAll();
+    public List<Course> findCoursebyCategory(int catId);
 }

@@ -10,6 +10,7 @@ public interface CourseCategoryDao {
     public boolean update(CourseCategory cat);
     public CourseCategory find(int id);
     public List<CourseCategory> findChildCategory(int id);
+    List<CourseCategory> findAllChildCategory(int id);
     public List<CourseCategory> findParentCategory(int id);
     public List<CourseCategory> findAll();
 }
