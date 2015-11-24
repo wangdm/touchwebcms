@@ -36,6 +36,92 @@ body{
     background:#33BEFF;
 }
 
+/***************************************/
+.hotspot-wrap{
+    
+}
+.imagehots{
+    width:100%;
+    height:100%;
+    position:absolute;
+    
+}
+.imagehots .imagehot{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:none;
+    
+}
+.imagehots .active{
+    display:block;
+}
+.imagehots .imagehot .hot-title{
+    left: 45%;
+    position:absolute;
+    bottom:50px;
+    display:none;
+}
+.imagehots .imagehot a.hot-url{
+    width:100%;
+    height:100%;
+    position:absolute;
+    z-index:10;
+}
+.imagehots .hot-nav{
+    left: 45%;
+    position:absolute;
+    bottom:30px;
+    z-index:10;
+}
+.imagehots .hot-nav ul{
+    list-style:none;
+}
+.imagehots .hot-nav ul li{
+    margin:0px 5px;
+    float:left;
+    width:10px;
+    height:10px;
+    background:url(../image/hotnav.png) 0px 0px no-repeat;
+}
+.imagehots .hot-nav ul li.active{
+    background:url(../image/hotnav.png) -13px 0px no-repeat;
+}
+.texthot-bg{
+    position:absolute;
+    width:300px;
+    height:400px;
+    right:0px;
+    top:0px;
+    background-color:#1b1b1b;
+    opacity:0.1;
+}
+.texthot{
+    position:absolute;
+    width:300px;
+    height:400px;
+    right:0px;
+    top:0px;
+    padding-top:20px;
+    color:#ffffff;
+    z-index:11;
+}
+.texthot a{
+    cursor:pointer;
+    color:#ffffff;
+}
+.texthot a:hover{
+    text-decoration:underline;
+    color:#ffcd02;
+}
+.texthot ul{
+    
+}
+.texthot ul li{
+    margin:10px 0px;
+    padding:1px 0px;
+}
+/***************************************/
 .area{
     width:100%;
     padding:10px 0px;
@@ -143,6 +229,9 @@ a:visited, a:hover, a:active {
     float:left;
     overflow:hidden;
     position:relative;
+}
+.course:hover{
+    border: 1px solid #ff8000;
 }
 .course-hover{
     border: 1px solid #ff8000;

@@ -5,6 +5,9 @@
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.UserDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.NavMenu"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.NavMenuDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.Hotspot"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.HotspotDao"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.HotspotDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.CourseCategoryDao"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.CourseCategory"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseCategoryDaoImpl"%>
@@ -25,7 +28,13 @@
     {
         cururl += "?" + query; 
     }
-	User user = (User) session.getAttribute("user");
+    int parentId = 0; 
+    String tmpParam = request.getParameter("parentId");
+    if(tmpParam!=null && !"".equals(tmpParam))
+    {
+        parentId = Integer.parseInt(tmpParam);
+    }
+    User user = (User) session.getAttribute("user");
 %>
 <!DOCTYPE HTML>
 <html>
@@ -87,12 +96,6 @@
     <div class="navmenu container">
       <ul>
       <%
-         int parentId = -1; 
-         String tmpParam = request.getParameter("parentId");
-         if(tmpParam!=null && !"".equals(tmpParam))
-         {
-             parentId = Integer.parseInt(tmpParam);
-         }
          if(parentId<0){
       %>
         <li><a class="selected" href="<%=application.getContextPath()%>">首页</a></li>
@@ -124,37 +127,59 @@
     </div>
   </div>
 
-  <div id = "myCarousel" class = "carousel slide" style="max-height:400px">
-   
-   <!-- Carousel indicators -->
-   <ol class = "carousel-indicators">
-      <li data-target = "#myCarousel" data-slide-to = "0" class = "active"></li>
-      <li data-target = "#myCarousel" data-slide-to = "1"></li>
-      <li data-target = "#myCarousel" data-slide-to = "2"></li>
-   </ol>   
-   
-   <!-- Carousel items -->
-   <div class = "carousel-inner">
-      <div class = "item active">
-         <img src = "http://www.tutorialspoint.com/bootstrap/images/slide1.png" alt = "First slide"  style="max-height:400px;text-align:center">
-         <div class = "carousel-caption">This Caption 1</div>
+  <div id="hotspot-wrap" style="width:100%;height:400px;position:relative">
+    <div class="imagehots">
+    <%
+    HotspotDao hotspotDao = new HotspotDaoImpl();
+    ArrayList<Hotspot> imagehotlist = (ArrayList<Hotspot>)hotspotDao.findImageHotspot(5, parentId);
+    if(imagehotlist!=null && !imagehotlist.isEmpty()){
+        for(int i=0; i<imagehotlist.size(); i++){
+            Hotspot hot = imagehotlist.get(i);
+    %>
+      <div class="imagehot" style="background:url(<%=hot.getImageuri() %>) 50% 0% / cover no-repeat;">
+        <div class="hot-title"><h2><%=hot.getTitle() %></h2></div>
+        <a class="hot-url" href="<%=hot.getUrl() %>"></a>
       </div>
-      
-      <div class = "item">
-         <img src = "http://www.tutorialspoint.com/bootstrap/images/slide2.png" alt = "Second slide"  style="max-height:400px;text-align:center">
-         <div class = "carousel-caption">This Caption 2</div>
+    <%
+        }
+    }
+    %>
+      <div class="hot-nav">
+        <ul>
+    <%
+    if(imagehotlist!=null && !imagehotlist.isEmpty()){
+        for(int i=0; i<imagehotlist.size(); i++){
+            out.print("<li data-index=\""+i+"\" ></li>");
+        }
+    }
+    %>
+        </ul>
       </div>
-      
-      <div class = "item">
-         <img src = "http://www.tutorialspoint.com/bootstrap/images/slide3.png" alt = "Third slide"  style="max-height:400px;text-align:center">
-         <div class = "carousel-caption">This Caption 3</div>
+    </div>
+    <% 
+    ArrayList<Hotspot> texthotlist = (ArrayList<Hotspot>)hotspotDao.findTextHotspot(5, parentId);
+    if(texthotlist!=null && !texthotlist.isEmpty()){
+    %>
+    <div class="container">
+      <div style="height:400px;position:relative">
+        <div class="texthot-bg">
+        </div>
+        <div class="texthot">
+          <ul>
+    <%
+        for(int i=0; i<texthotlist.size(); i++){
+            Hotspot hot = texthotlist.get(i);
+    %>
+            <li><a href="<%=hot.getUrl() %>"><%=hot.getTitle() %></a></li>
+    <%
+        }
+    }
+    %>
+          </ul>
+        </div>
       </div>
-   </div>
-   
-   <!-- Carousel nav --> 
-   <a class = "carousel-control left" href = "#myCarousel" data-slide = "prev">&lsaquo;</a>
-   <a class = "carousel-control right" href = "#myCarousel" data-slide = "next">&rsaquo;</a>
-</div> 
+    </div>
+  </div> 
   
   <div class="area odd">
     <div class="container">
@@ -450,11 +475,37 @@
   </div>
   
 </body>
-<script type="text/javascript">
+<script type="text/javascript">  
+    var curHotspot = 0;
+    var maxHotspot = 0;
+    function setActiveHotspot()
+    {
+        $(".hot-nav li.active").removeClass("active");
+        $(".imagehots .active").removeClass("active");
+        $(".hot-nav li").eq(curHotspot).addClass("active");
+        $(".imagehots .imagehot").eq(curHotspot).addClass("active");
+        curHotspot++;
+        if(curHotspot>=maxHotspot)
+        {
+            curHotspot = 0;
+        }
+        t=setTimeout("setActiveHotspot()",3000)
+    }
+    
 	$(function(){
     	$('#myCarousel').carousel({
     	    interval: false
-    	});      
+    	});
+
+        maxHotspot = $(".hot-nav li").size();
+    	setActiveHotspot();
+        $(".hot-nav li").on("mouseover", function(){
+            $(".hot-nav li.active").removeClass("active");
+            $(".imagehots .active").removeClass("active");
+            curHotspot = $(this).attr("data-index");
+            $(this).addClass("active");
+            $(".imagehots .imagehot").eq(curHotspot).addClass("active");
+        }); 
 	
     	$(".course").on("mouseover", function(){
     	    $(this).addClass("course-hover");
