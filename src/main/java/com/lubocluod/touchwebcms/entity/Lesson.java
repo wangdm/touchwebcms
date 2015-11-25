@@ -3,14 +3,16 @@ package com.lubocluod.touchwebcms.entity;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-public class Video {
+public class Lesson {
     int id;
     int courseId;
-    int lessonId;
+    int videoId;
     String title;
+    String desc;
     Time duration;
     String videoUri;
-    String desc;
+    int status;
+    boolean free;
     private Timestamp createTime;
     private Timestamp updateTime;
     int favoriteCnt;
@@ -33,12 +35,12 @@ public class Video {
         this.courseId = courseId;
     }
 
-    public int getLessonId() {
-        return lessonId;
+    public int getVideoId() {
+        return videoId;
     }
 
-    public void setLessonId(int lessonId) {
-        this.lessonId = lessonId;
+    public void setVideoId(int videoId) {
+        this.videoId = videoId;
     }
 
     public String getTitle() {
@@ -49,12 +51,20 @@ public class Video {
         this.title = title;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public Time getDuration() {
         return duration;
     }
 
-    public void setDuration(Time time) {
-        this.duration = time;
+    public void setDuration(Time duration) {
+        this.duration = duration;
     }
 
     public String getVideoUri() {
@@ -65,12 +75,20 @@ public class Video {
         this.videoUri = videoUri;
     }
 
-    public String getDesc() {
-        return desc;
+    public int getStatus() {
+        return status;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public boolean isFree() {
+        return free;
+    }
+
+    public void setFree(boolean free) {
+        this.free = free;
     }
 
     public Timestamp getCreateTime() {

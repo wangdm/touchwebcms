@@ -1,11 +1,12 @@
 package com.lubocluod.touchwebcms.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Course {
     
     public enum CourseStatus{
-        REVIEW(0),UPCOMING(1),ONGOING(2),LIVING(3),FINISH(4),BLOCK(5);
+        REVIEW(0),UPCOMING(1),ONGOING(2),LIVING(3),FINISH(4),BLOCK(5),REVIEWERR(6);
         private CourseStatus(int val){
             this.val = val;
         }
@@ -21,6 +22,7 @@ public class Course {
             case 3:return "LIVING";
             case 4:return "FINISH";
             case 5:return "BLOCK";
+            case 6:return "REVIEWERR";
             default:return "REVIEW";
             }
         }
@@ -32,6 +34,7 @@ public class Course {
             case 3:return LIVING;
             case 4:return FINISH;
             case 5:return BLOCK;
+            case 6:return REVIEWERR;
             default:return null;
             }
         }
@@ -48,15 +51,20 @@ public class Course {
     String logo;
     String adimage;
     String property;
+    int totalLesson;
+    int curLesson;
     private Timestamp createTime;
-    private Timestamp updateTime;
     private Timestamp modifyTime;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private Timestamp updateTime;
     int grade;
     int gradeCnt;
     int favoriteCnt;
     int greatCnt;
     int studyCnt;
     CourseStatus status;
+    List<Lesson> lessons;
 
     public int getId() {
         return id;
@@ -146,6 +154,22 @@ public class Course {
         this.property = property;
     }
 
+    public int getTotalLesson() {
+        return totalLesson;
+    }
+
+    public void setTotalLesson(int totalLesson) {
+        this.totalLesson = totalLesson;
+    }
+
+    public int getCurLesson() {
+        return curLesson;
+    }
+
+    public void setCurLesson(int curLesson) {
+        this.curLesson = curLesson;
+    }
+
     public Timestamp getCreateTime() {
         return createTime;
     }
@@ -154,20 +178,36 @@ public class Course {
         this.createTime = createTime;
     }
 
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public Timestamp getModifyTime() {
         return modifyTime;
     }
 
     public void setModifyTime(Timestamp modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
     public int getGrade() {
@@ -216,5 +256,13 @@ public class Course {
 
     public void setStatus(CourseStatus status) {
         this.status = status;
+    }
+
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 }

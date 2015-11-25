@@ -36,7 +36,7 @@ public class VideoDaoImpl implements VideoDao {
             stat = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
             stat.setInt(i++, v.getCourseId());
             stat.setString(i++, v.getTitle());
-            stat.setInt(i++, v.getDuration());
+            stat.setTime(i++, v.getDuration());
             stat.setString(i++, v.getVideoUri());
             stat.setString(i++, v.getDesc());
             stat.setTimestamp(i++, v.getCreateTime());
@@ -79,7 +79,7 @@ public class VideoDaoImpl implements VideoDao {
             int i = 1;
             stat = conn.prepareStatement(sql);
             stat.setString(i++, v.getTitle());
-            stat.setInt(i++, v.getDuration());
+            stat.setTime(i++, v.getDuration());
             stat.setString(i++, v.getVideoUri());
             stat.setString(i++, v.getDesc());
             stat.setTimestamp(i++, v.getUpdateTime());
@@ -107,7 +107,7 @@ public class VideoDaoImpl implements VideoDao {
                 v.setId(rs.getInt("id"));
                 v.setCourseId(rs.getInt("course_id"));
                 v.setTitle(rs.getString("title"));
-                v.setDuration(rs.getInt("duration"));
+                v.setDuration(rs.getTime("duration"));
                 v.setVideoUri(rs.getString("video_uri"));
                 v.setDesc(rs.getString("description"));
                 v.setCreateTime(rs.getTimestamp("create_time"));
@@ -139,7 +139,7 @@ public class VideoDaoImpl implements VideoDao {
                 v.setId(rs.getInt("id"));
                 v.setCourseId(rs.getInt("course_id"));
                 v.setTitle(rs.getString("title"));
-                v.setDuration(rs.getInt("duration"));
+                v.setDuration(rs.getTime("duration"));
                 v.setVideoUri(rs.getString("video_uri"));
                 v.setDesc(rs.getString("description"));
                 v.setCreateTime(rs.getTimestamp("create_time"));
@@ -187,7 +187,7 @@ public class VideoDaoImpl implements VideoDao {
                 v.setId(rs.getInt("id"));
                 v.setCourseId(rs.getInt("course_id"));
                 v.setTitle(rs.getString("title"));
-                v.setDuration(rs.getInt("duration"));
+                v.setDuration(rs.getTime("duration"));
                 v.setVideoUri(rs.getString("video_uri"));
                 v.setDesc(rs.getString("desc"));
                 v.setCreateTime(rs.getTimestamp("create_time"));

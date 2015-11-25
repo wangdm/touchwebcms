@@ -33,7 +33,7 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public int add(Course c) {
         // TODO Auto-generated method stub
-        String sql = "INSERT INTO course(uid,aid,cat_id,name,price,description,detail,logo,adimage,property,create_time,update_time,modify_time) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO course(uid,aid,cat_id,name,price,description,detail,logo,adimage,property,totallesson,curlesson,create_time,modify_time,start_time,end_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             int i = 1;
             stat = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
@@ -47,9 +47,13 @@ public class CourseDaoImpl implements CourseDao {
             stat.setString(i++, c.getLogo());
             stat.setString(i++, c.getAdimage());
             stat.setString(i++, c.getProperty());
+            stat.setInt(i++, c.getTotalLesson());
+            stat.setInt(i++, c.getCurLesson());
             stat.setTimestamp(i++, c.getCreateTime());
-            stat.setTimestamp(i++, c.getUpdateTime());
             stat.setTimestamp(i++, c.getModifyTime());
+            stat.setTimestamp(i++, c.getStartTime());
+            stat.setTimestamp(i++, c.getEndTime());
+            stat.setTimestamp(i++, c.getUpdateTime());
             stat.executeUpdate();
             ResultSet rs = stat.getGeneratedKeys();
             if (rs.next()) {
@@ -84,7 +88,7 @@ public class CourseDaoImpl implements CourseDao {
     public boolean update(Course c) {
         // TODO Auto-generated method stub
         // TODO Auto-generated method stub
-        String sql = "UPDATE course SET cat_id=?,name=?,price=?,description=?,detail=?,logo=?,adimage=?,property=?,update_time=?,grade=?,grade_cnt=?,favorite_cnt=?,great_cnt=?,study_cnt=?,status=? WHERE id=?";
+        String sql = "UPDATE course SET cat_id=?,name=?,price=?,description=?,detail=?,logo=?,adimage=?,property=?,totallesson=?,curlesson=?,modify_time=?,start_time=?,end_time=?,update_time=?,grade=?,grade_cnt=?,favorite_cnt=?,great_cnt=?,study_cnt=?,status=? WHERE id=?";
         try {
             stat = conn.prepareStatement(sql);
             int i = 1;
@@ -96,6 +100,11 @@ public class CourseDaoImpl implements CourseDao {
             stat.setString(i++, c.getLogo());
             stat.setString(i++, c.getAdimage());
             stat.setString(i++, c.getProperty());
+            stat.setInt(i++, c.getTotalLesson());
+            stat.setInt(i++, c.getCurLesson());
+            stat.setTimestamp(i++, c.getModifyTime());
+            stat.setTimestamp(i++, c.getStartTime());
+            stat.setTimestamp(i++, c.getEndTime());
             stat.setTimestamp(i++, c.getUpdateTime());
             stat.setInt(i++, c.getGrade());
             stat.setInt(i++, c.getGradeCnt());
@@ -116,7 +125,7 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public Course find(int id) {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,uid,aid,cat_id,name,price,description,detail,logo,adimage,property,create_time,update_time,modify_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course WHERE id=?";
+        String sql = "SELECT id,uid,aid,cat_id,name,price,description,detail,logo,adimage,property,totallesson,curlesson,create_time,modify_time,start_time,end_time,update_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course WHERE id=?";
         try {
             stat = conn.prepareStatement(sql);
             stat.setInt(1, id);
@@ -135,9 +144,13 @@ public class CourseDaoImpl implements CourseDao {
                 c.setLogo(rs.getString("logo"));
                 c.setAdimage(rs.getString("adimage"));
                 c.setProperty(rs.getString("property"));
+                c.setTotalLesson(rs.getInt("totallesson"));
+                c.setCurLesson(rs.getInt("curlesson"));
                 c.setCreateTime(rs.getTimestamp("create_time"));
-                c.setUpdateTime(rs.getTimestamp("update_time"));
                 c.setModifyTime(rs.getTimestamp("modify_time"));
+                c.setStartTime(rs.getTimestamp("start_time"));
+                c.setEndTime(rs.getTimestamp("end_time"));
+                c.setUpdateTime(rs.getTimestamp("update_time"));
                 c.setGrade(rs.getInt("grade"));
                 c.setGradeCnt(rs.getInt("grade_cnt"));
                 c.setFavoriteCnt(rs.getInt("favorite_cnt"));
@@ -156,7 +169,7 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public List<Course> findAll() {
         // TODO Auto-generated method stub
-        String sql = "SELECT id,uid,aid,cat_id,name,price,logo,adimage,property,create_time,update_time,modify_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course";
+        String sql = "SELECT id,uid,aid,cat_id,name,price,logo,adimage,property,totallesson,curlesson,create_time,modify_time,start_time,end_time,update_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course";
         try {
             stat = conn.prepareStatement(sql);
             ResultSet rs = stat.executeQuery();
@@ -173,9 +186,13 @@ public class CourseDaoImpl implements CourseDao {
                 c.setLogo(rs.getString("logo"));
                 c.setAdimage(rs.getString("adimage"));
                 c.setProperty(rs.getString("property"));
+                c.setTotalLesson(rs.getInt("totallesson"));
+                c.setCurLesson(rs.getInt("curlesson"));
                 c.setCreateTime(rs.getTimestamp("create_time"));
-                c.setUpdateTime(rs.getTimestamp("update_time"));
                 c.setModifyTime(rs.getTimestamp("modify_time"));
+                c.setStartTime(rs.getTimestamp("start_time"));
+                c.setEndTime(rs.getTimestamp("end_time"));
+                c.setUpdateTime(rs.getTimestamp("update_time"));
                 c.setGrade(rs.getInt("grade"));
                 c.setGradeCnt(rs.getInt("grade_cnt"));
                 c.setFavoriteCnt(rs.getInt("favorite_cnt"));
@@ -197,7 +214,7 @@ public class CourseDaoImpl implements CourseDao {
         // TODO Auto-generated method stub
         CourseCategoryDao courseCategoryDao = new CourseCategoryDaoImpl();
         ArrayList<CourseCategory> catList = (ArrayList<CourseCategory>) courseCategoryDao.findAllChildCategory(catId);
-        String sql = "SELECT id,uid,aid,cat_id,name,price,logo,adimage,property,create_time,update_time,modify_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course WHERE cat_id="+catId;
+        String sql = "SELECT id,uid,aid,cat_id,name,price,logo,adimage,property,totallesson,curlesson,create_time,modify_time,start_time,end_time,update_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course WHERE cat_id="+catId;
         for(int i=0; i<catList.size(); i++)
         {
             sql += " OR cat_id="+catList.get(i).getCatId();
@@ -218,9 +235,13 @@ public class CourseDaoImpl implements CourseDao {
                 c.setLogo(rs.getString("logo"));
                 c.setAdimage(rs.getString("adimage"));
                 c.setProperty(rs.getString("property"));
+                c.setTotalLesson(rs.getInt("totallesson"));
+                c.setCurLesson(rs.getInt("curlesson"));
                 c.setCreateTime(rs.getTimestamp("create_time"));
-                c.setUpdateTime(rs.getTimestamp("update_time"));
                 c.setModifyTime(rs.getTimestamp("modify_time"));
+                c.setStartTime(rs.getTimestamp("start_time"));
+                c.setEndTime(rs.getTimestamp("end_time"));
+                c.setUpdateTime(rs.getTimestamp("update_time"));
                 c.setGrade(rs.getInt("grade"));
                 c.setGradeCnt(rs.getInt("grade_cnt"));
                 c.setFavoriteCnt(rs.getInt("favorite_cnt"));

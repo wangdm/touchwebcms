@@ -43,11 +43,6 @@ public class VideoDaoImplTest {
 
     @Test
     public void testFindCourseVideo() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testDeleteCourseVideo() {
         VideoDao videoDao = new VideoDaoImpl();
         ArrayList<Video> videolist = (ArrayList<Video>)videoDao.findCourseVideo(1);
         if(videolist!=null && videolist.size()>0)
@@ -58,6 +53,11 @@ public class VideoDaoImplTest {
                 System.out.println("id:"+video.getId()+"\ttitle:"+video.getTitle()+"\turl:"+video.getVideoUri());
             }
         }
+    }
+
+    @Test
+    public void testDeleteCourseVideo() {
+        fail("Not yet implemented");
     }
 
     @Test

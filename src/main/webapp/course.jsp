@@ -8,9 +8,9 @@
 <%@ page import="com.lubocluod.touchwebcms.entity.Course"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.CourseDao"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseDaoImpl"%>
-<%@ page import="com.lubocluod.touchwebcms.entity.Video"%>
-<%@ page import="com.lubocluod.touchwebcms.dao.VideoDao"%>
-<%@ page import="com.lubocluod.touchwebcms.dao.impl.VideoDaoImpl"%>
+<%@ page import="com.lubocluod.touchwebcms.entity.Lesson"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.LessonDao"%>
+<%@ page import="com.lubocluod.touchwebcms.dao.impl.LessonDaoImpl"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.CourseCategoryDao"%>
 <%@ page import="com.lubocluod.touchwebcms.entity.CourseCategory"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.CourseCategoryDaoImpl"%>
@@ -21,6 +21,7 @@
 <%@ page import="com.lubocluod.touchwebcms.entity.CoursePropertyItem"%>
 <%@ page import="com.lubocluod.touchwebcms.dao.impl.CoursePropertyItemDaoImpl"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.Calendar"%>
 <%
     String tmpParam = null;
     String urlpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getRequestURI();
@@ -230,10 +231,10 @@
          <li>
             <a href = "#course-description" data-toggle = "tab">课程详情</a>
          </li>
-         <li>
+         <li class = "active">
             <a href = "#course-catalog" data-toggle = "tab">课程目录</a>
          </li>
-         <li class = "active">
+         <li>
             <a href = "#course-comment" data-toggle = "tab">课程评论</a>
          </li>
       </ul>
@@ -242,23 +243,57 @@
          <div class = "tab-pane fade" id = "course-description">
            <%=curCourse.getDetail() %>
          </div>
-         <div class = "tab-pane fade" id = "course-catalog">
-         <%
-         VideoDao videoDao = new VideoDaoImpl();
-         ArrayList<Video> videolist = (ArrayList<Video>)videoDao.findCourseVideo(curCourse.getId());
-         if(videolist!=null && videolist.size()>0)
-         {
-             out.println("<ul>");
-             for(int i=0; i<videolist.size(); i++)
-             {
-                 Video video = videolist.get(i);
-                 out.println("<li><a href=\""+application.getContextPath()+"/video.jsp?videoId="+video.getId()+"\">"+video.getTitle()+"</a></li>");
+         <div class = "tab-pane fade in active" id = "course-catalog">
+           <div class="catalog-head">
+             <div class="catalog-cur" style="
+             <%
+             float per = (float)curCourse.getCurLesson()/curCourse.getTotalLesson()*100;
+             if(per>20){
+                 out.print("right:"+per+"%;");
+             }else{
+                 out.print("left:"+per+"%;");
              }
-             out.println("<ul>");
+             Calendar c = Calendar.getInstance();
+             c.setTime(curCourse.getUpdateTime());
+             %>
+             "><%=c.get(Calendar.MONTH)+1 %>月<%=c.get(Calendar.DAY_OF_MONTH) %>日更新</div>
+             <div class="catalog-progress"><span class="catalog-progress-cur" style="width:<%=per %>%;"></span></div>
+             <%
+             c.setTime(curCourse.getStartTime());
+             %>
+             <div class="catalog-start-date"><%=c.get(Calendar.MONTH)+1 %>月<%=c.get(Calendar.DAY_OF_MONTH) %>日开课</div>
+             <%
+             c.setTime(curCourse.getEndTime());
+             %>
+             <div class="catalog-end-date"><%=c.get(Calendar.MONTH)+1 %>月<%=c.get(Calendar.DAY_OF_MONTH) %>日结课</div>
+           </div>
+         <%
+         LessonDao lessonDao = new LessonDaoImpl();
+         ArrayList<Lesson> lessonlist = (ArrayList<Lesson>)lessonDao.findCourseLesson(curCourse.getId());
+         if(lessonlist!=null && lessonlist.size()>0)
+         {
+             for(int i=0; i<lessonlist.size(); i++)
+             {
+                 Lesson lesson = lessonlist.get(i);
+         %>
+           <div class="catalog-item">
+            <div class="catalog-num1"><div class="catalog-num2">第<span class="catalog-num"><%=i+1 %></span>节</div></div>
+            <div class="catalog-info">
+              <div class="catalog-item-head">
+                <div class="catalog-title">
+                  <a <%if(lesson.getStatus()==1){out.print("href=\""+application.getContextPath()+"/video.jsp?videoId="+lesson.getVideoId()+"\"");} %>><%=lesson.getTitle()%></a>
+                </div>
+                <div class="catalog-time"><%if(lesson.getStatus()==1){out.print(lesson.getDuration());}else{out.print("[暂未授课]");}%></div>
+              </div>
+              <div class="catalog-desc"><%=lesson.getDesc()==null?lesson.getTitle():lesson.getDesc()%></div>
+            </div>
+           </div>
+         <%
+             }
          }
          %>
          </div>
-         <div class = "tab-pane fade in active" id = "course-comment">
+         <div class = "tab-pane fade" id = "course-comment">
             <div  class="comment-head">
               <div class="comment-head-grade">
                 <div class="comment-head-num"><%=((float)curCourse.getGrade())/10 %></div>
@@ -297,6 +332,7 @@
       </div>
     </div>
   </div>
+  
   <div class="col-lg-3 hidden-md" style="padding:0px;">
     <div class="boutique-box">
       <%
@@ -690,13 +726,10 @@
             $("html,body").animate({scrollTop:0}, 300);
         });    
     
-        $(".course").on("mouseover", function(){
-            $(this).addClass("course-hover");
+        $(".catalog-item-head").on("click", function(){
+            $(this).next().toggleClass("show");
         });   
     
-        $(".course").on("mouseout", function(){
-            $(this).removeClass("course-hover");
-        });
         var urlpath = "<%=urlpath %>";
         var urlquery = "<%=query %>";
         var loc = urlquery.split("&");

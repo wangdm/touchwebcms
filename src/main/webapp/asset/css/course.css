@@ -144,12 +144,116 @@
     font-size:16px;
     padding:20px 10px;
 }
-
-#course-catalog ul li{
-    list-style:none;
-    margin:10px 0px;
-    padding:8px 0px 8px 10px;
+.catalog-head{
+    position:relative;
+    padding:30px 0px 10px 0px;
+    background:rgb(243, 243, 243);
+    display:block;
+    overflow:hidden;
+    font-size:12px;
+    color:#ffffff;
+}
+.catalog-head .catalog-progress{
+    background: #ccc;
+    height: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    margin:5px 10px;
+}
+.catalog-head .catalog-progress .catalog-progress-cur{
+    background: #039ae3;
+    display: block;
+    height: 100%;
+    width: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.catalog-head .catalog-start-date{
+    padding-left:5px;
+    float:left;
+    background: #ccc;
+    border-radius: 10px;
+    padding:2px 8px;
+    margin:0px 5px;
+}
+.catalog-head .catalog-end-date{
+    padding-right:5px;
+    float:right;
+    background: #ccc;
+    border-radius: 10px;
+    padding:2px 8px;
+    margin:0px 5px;
+}
+.catalog-head .catalog-cur{
+    position:absolute;
+    float:left;
+    background: #039ae3;
+    border-radius: 10px;
+    padding:2px 8px;
+    margin:0px 5px;
+    top:8px;
+}
+.catalog-item{
+    float:none;
+    display:block;
+    position:relative;
+    overflow:hidden;
+    margin-top:10px;
+}
+.catalog-item .catalog-num1{
+    text-align:center;
+    line-height:40px;
+    float:left;
+    width:70px;
+}
+.catalog-item .catalog-num1 .catalog-num2{
+    height:40px;
+    padding:0px 5px;
+    background-color: rgb(102, 102, 102);
+    color:#ffffff;
+}
+.catalog-item .catalog-num1 .catalog-num2 span.catalog-num{
+    height:100%;
+    width:25px;
+    display:inline-block; 
+}
+.catalog-item .catalog-info{
+    margin-left:70px;
+}
+.catalog-item .catalog-info .catalog-item-head{
+    line-height:40px;
+    height:100%;
+    height:40px;
+    padding:0px 10px;
+    color:#000000;
     background-color: rgb(243, 243, 243);
+}
+.catalog-item .catalog-info .catalog-item-head a{
+    color:#000000;
+}
+.catalog-item .catalog-info .catalog-item-head a:hover{
+    color:#0000ff;
+}
+.catalog-item .catalog-info .catalog-item-head:hover{
+    background-color: rgb(200, 200, 243);
+    
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-title{
+    float:left;
+    
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-time{
+    float:right;
+    
+}
+.catalog-item .catalog-info .catalog-desc{
+    padding:5px 15px;
+    display:none;
+    border:1px solid rgb(243, 243, 243);
+}
+.catalog-item .catalog-info .show{
+    display:inline;
 }
 
 #course-comment{
