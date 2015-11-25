@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true" version="3.0">
   <display-name>Archetype Created Web Application</display-name>
-  
   <servlet>
     <servlet-name>UserManagerServlet</servlet-name>
     <servlet-class>com.lubocluod.touchwebcms.controller.UserManagerServlet</servlet-class>
@@ -10,7 +9,14 @@
     <servlet-name>UserManagerServlet</servlet-name>
     <url-pattern>/usermanager</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>UserActionServlet</servlet-name>
+    <servlet-class>com.lubocluod.touchwebcms.controller.UserActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserActionServlet</servlet-name>
+    <url-pattern>/useraction</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>RoleManagerServlet</servlet-name>
     <servlet-class>com.lubocluod.touchwebcms.controller.RoleManagerServlet</servlet-class>
@@ -19,7 +25,6 @@
     <servlet-name>RoleManagerServlet</servlet-name>
     <url-pattern>/rolemanager</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>ChannelManagerServlet</servlet-name>
     <servlet-class>com.lubocluod.touchwebcms.controller.ChannelManagerServlet</servlet-class>
@@ -28,7 +33,6 @@
     <servlet-name>ChannelManagerServlet</servlet-name>
     <url-pattern>/chnmanager</url-pattern>
   </servlet-mapping>
-  
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>

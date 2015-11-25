@@ -1,0 +1,45 @@
+.user-nav-wrap{
+    margin-top:10px;
+    background-color:#ffffff;
+    padding:10px 10%;
+}
+.user-nav .user-nav-main{
+}
+.user-nav .user-nav-main i{
+    line-height:40px;
+    font-size:22px;
+    padding-right:5px;
+    display:inline-block;
+}
+.user-nav .user-nav-main span{
+    line-height:40px;
+    font-size:17px;
+    font-weight:500;
+    display:inline-block;
+    cursor:pointer;
+}
+.user-nav ul.user-nav-sub{
+    padding-left:30px;
+    list-style-type:none;
+}
+.user-nav ul.user-nav-sub li{
+    margin:6px 0px;
+    cursor:pointer;
+    font-size:15px;
+}
+.user-nav ul.user-nav-sub li:hover{
+    color:#f90;
+}
+.user-nav ul.user-nav-sub li.active{
+    color:#f90;
+}
+
+/**************************************/
+.action-content-wrap{
+    margin-top:10px;
+    background-color:#ffffff;
+    padding:10px 10px;
+}
+.action-content{
+    overflow:hidden;
+}
