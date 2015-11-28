@@ -12,4 +12,5 @@ public interface CourseDao {
     public Course find(int id);
     public List<Course> findAll();
     public List<Course> findCoursebyCategory(int catId);
+    public List<Course> findCoursebyUser(int uid);
 }

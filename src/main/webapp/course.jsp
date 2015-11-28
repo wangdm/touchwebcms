@@ -333,7 +333,7 @@
     </div>
   </div>
   
-  <div class="col-lg-3 hidden-md" style="padding:0px;">
+  <div class="col-lg-3 hidden-xs hidden-sm hidden-md" style="padding:0px;">
     <div class="boutique-box">
       <%
       {

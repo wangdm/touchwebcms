@@ -327,7 +327,7 @@ a:visited, a:hover, a:active {
     font-size:18px;
     color:#ffffff;
 } 
-.course-info{
+.course .course-info{
     width:100%;
     overflow:hidden;
     display:block;
@@ -358,7 +358,7 @@ a:visited, a:hover, a:active {
 .course-price-value{
     color:#E85308;
 }
-.course-stat{    
+.course .course-stat{    
     overflow:hidden;
     display:block;
     border-top:1px solid #AAAAAA;

@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="asset/css/bootstrap-theme.css">
 <link rel="stylesheet" href="asset/css/index.css">
 <link rel="stylesheet" href="asset/css/member.css">
-<link rel="stylesheet" href="asset/css/iconfont.css">
+<link rel="stylesheet" href="asset/fonts/iconfont.css">
 <script type="text/javascript" src="asset/js/jquery-2.1.4.js"></script>
 <script type="text/javascript" src="asset/js/jquery-ui.js"></script>
 <script type="text/javascript" src="asset/js/bootstrap.js"></script>
@@ -78,7 +78,7 @@
     <div class="col-sm-3" style="padding:6px;">
      <div class="user-nav-wrap">
         <div class="user-nav">
-          <div class="user-nav-main"><i class="iconfont">&#xe620;</i><span>我的课程</span></div>
+          <div class="user-nav-main"><i class="iconfont">&#xe602;</i><span>我的课程</span></div>
           <ul class="user-nav-sub">
             <li class="active" data-action="showcourse">所有课程</li>
             <li data-action="createcourse">创建课程</li>
@@ -87,14 +87,14 @@
           </ul>
         </div>
         <div class="user-nav">
-          <div class="user-nav-main"><i class="iconfont">&#xe615;</i><span>我的消息</span></div>
+          <div class="user-nav-main"><i class="iconfont">&#xe606;</i><span>我的消息</span></div>
           <ul class="user-nav-sub">
             <li data-action="notification">通知</li>
             <li data-action="message">私信</li>
           </ul>
         </div>
         <div class="user-nav">
-          <div class="user-nav-main"><i class="iconfont">&#xe641;</i><span>我的资料</span></div>
+          <div class="user-nav-main"><i class="iconfont">&#xe603;</i><span>我的资料</span></div>
           <ul class="user-nav-sub">
             <li data-action="profile">基本资料</li>
 <!--        <li data-action="contact">联系方式</li>         -->
@@ -112,7 +112,8 @@
     </div>
     
   </div>
-
+  <div id="goTop"><a></a>
+  </div>
 <script>
   function doAction(action){
       $.ajax({
@@ -128,6 +129,8 @@
       });
   }
   $(function(){
+      doAction("showcourse"); 
+      
       $(".user-nav .user-nav-main").on("click", function() {
           $(".user-nav li.active").removeClass("active");
           $(this).parent().find("li").first().addClass("active");
@@ -140,8 +143,11 @@
           $(this).addClass("active");
           doAction(action);
       });
+      
+      $("#goTop").on("click", function() {
+          $("html,body").animate({scrollTop:0}, 300);
+      });
   });
-  doAction("showcourse");
 
 </script>
 </body>

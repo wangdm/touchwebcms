@@ -258,4 +258,48 @@ public class CourseDaoImpl implements CourseDao {
         return null;
     }
 
+    @Override
+    public List<Course> findCoursebyUser(int uid) {
+        // TODO Auto-generated method stub
+        String sql = "SELECT id,uid,aid,cat_id,name,price,logo,adimage,property,totallesson,curlesson,create_time,modify_time,start_time,end_time,update_time,grade,grade_cnt,favorite_cnt,great_cnt,study_cnt,status FROM course WHERE uid=?";
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setInt(1, uid);
+            ResultSet rs = stat.executeQuery();
+            List<Course> list = new ArrayList<Course>();
+            Course c = null;
+            while (rs.next()) {
+                c = new Course();
+                c.setId(rs.getInt("id"));
+                c.setUid(rs.getInt("uid"));
+                c.setAid(rs.getInt("aid"));
+                c.setCatId(rs.getInt("cat_id"));
+                c.setName(rs.getString("name"));
+                c.setPrice(rs.getInt("price"));
+                c.setLogo(rs.getString("logo"));
+                c.setAdimage(rs.getString("adimage"));
+                c.setProperty(rs.getString("property"));
+                c.setTotalLesson(rs.getInt("totallesson"));
+                c.setCurLesson(rs.getInt("curlesson"));
+                c.setCreateTime(rs.getTimestamp("create_time"));
+                c.setModifyTime(rs.getTimestamp("modify_time"));
+                c.setStartTime(rs.getTimestamp("start_time"));
+                c.setEndTime(rs.getTimestamp("end_time"));
+                c.setUpdateTime(rs.getTimestamp("update_time"));
+                c.setGrade(rs.getInt("grade"));
+                c.setGradeCnt(rs.getInt("grade_cnt"));
+                c.setFavoriteCnt(rs.getInt("favorite_cnt"));
+                c.setGreatCnt(rs.getInt("great_cnt"));
+                c.setStudyCnt(rs.getInt("study_cnt"));
+                c.setStatus(CourseStatus.valueOf(rs.getInt("status")));
+                list.add(c);
+            }
+            return list;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

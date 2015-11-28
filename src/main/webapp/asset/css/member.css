@@ -43,3 +43,306 @@
 .action-content{
     overflow:hidden;
 }
+/********************* showcourse-action.jsp *********************/
+.showcourse-head{
+    height:40px;
+    border-bottom:1px solid rgb(230,230,230);
+}
+.course-list{
+    
+}
+.course-list .select{
+    background-color:#f8f8f8;
+}
+.course-list .course-item{
+    padding:15px 0px;
+    display:block;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid rgb(230,230,230);
+}
+.course-list .course-item:hover{
+    background-color:#f8f8f8;
+}
+.course-list .select .course-cmd{
+    visibility:visible;
+}
+.course-list .course-item:hover .course-cmd{
+    visibility:visible;
+}
+.course-list .course-item .course-img{
+    float:left;
+}
+.course-list .course-item .course-info{
+    clear:right;
+    position:relative;
+    overflow:hidden;
+}
+.course-list .course-item .course-info .course-title{
+    padding-left:10px;
+    float:left;
+    width:60%;
+    font-size:16px;
+    line-height:20px;
+    overflow:hidden;
+}
+.course-list .course-item .course-info .course-title a{
+    color:#000000;
+    font-size:16px;
+}
+.course-list .course-item .course-info .course-title a:hover{
+    color:#cd0000;
+}
+.course-list .course-item .course-info .course-lesson{
+    float:right;
+    width:40%;
+    line-height:20px;
+}
+.course-list .course-item .course-info .course-stat{
+    padding:5px 0px 5px 10px;
+    float:left;
+    width:100%;
+}
+.course-list .course-item .course-info .course-stat span{
+    line-height:30px;
+    color:rgb(153, 153, 153);
+    overflow:hidden;
+}
+.course-list .course-item .course-info .course-stat span.delimiter{
+    margin:0px 10px;
+    width: 1px;
+    height: 14px;
+    border-left:1px solid #ddd;
+    background: #ddd;
+}
+.course-list .course-item .course-info .course-tag{
+    padding-left:10px;
+    float:left;
+    width:100%;
+}
+.course-list .course-item .course-info .course-tag a{
+    display: inline-block;
+    background: #eeeeee;
+    margin: 5px 10px 0px 10px;
+    font-size: 12px;
+    color: #333;
+    padding: 3px 5px;
+    border-radius: 7px;
+    font-weight: normal;
+    cursor:pointer;
+}
+.course-list .course-item .course-info .course-tag a:hover{
+    background: #f90;
+    color: #ffffff;
+}
+.course-list .course-item .course-cmd{
+    bottom:6px;
+    right:10px;
+    position:absolute;
+    visibility:hidden;
+}
+.course-list .course-item .course-cmd i{
+    color:#a0a0a0;
+    font-size:22px;
+    cursor:pointer;
+    margin:0px 3px;
+    font-weight:100;
+}
+.course-list .course-item .course-cmd i.select{
+    color:#ff9900;
+    visibility:visible;
+}
+.course-list .course-item .course-cmd i:hover{
+    color:#ff9900;
+}
+
+/********************* createcourse-action.jsp *********************/
+.createcourse-head{
+    height:40px;
+}
+.createcourse-head .create-step{
+    font-size:18px;
+    padding:0px 5%;
+}
+.createcourse-head .create-step .step{
+    position: relative;
+    float:left;
+    background: #ddd;
+    padding-left:10px;
+    height:40px;
+    width:30%;
+    line-height:40px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.createcourse-head .create-step .step span{
+    
+}
+.createcourse-head .create-step .step span.index{
+    background: #999;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    border-radius: 18px;
+    color: #fff;
+    text-align: center;
+    margin-right: 10px;
+}
+.createcourse-head .create-step .step .step-space{
+    background: #ddd;
+    height:70px;
+    width:24px;
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: -16px;
+}
+.createcourse-head .create-step .step .step-b{
+    float:left;
+    position: absolute;
+    left: -8px;
+    height:0px;
+    width:0px;
+    border-style: solid;
+    border-width: 35px 19px;
+    border-color: transparent transparent transparent #ddd;
+    z-index:10;
+}
+.createcourse-head .create-step .step .step-a{
+    float:left;
+    position: absolute;
+    left: 0px;
+    height:0px;
+    width:0px;
+    border-style: solid;
+    border-width: 35px 19px;
+    border-color: transparent  transparent  transparent  #f8f8f8;
+}
+.createcourse-head .create-step .active{
+    background: #f96;
+    color: #fff;
+}
+.createcourse-head .create-step .active span{
+}
+.createcourse-head .create-step .active span.index{
+    background: #fff;
+    color: #f96;
+}
+.createcourse-head .create-step .step .active{
+    border-color: #f96  #f96  #f96  #f8f8f8;
+}
+.createcourse-head .create-step .active .step-b{
+    border-color: transparent transparent transparent #f96 ;
+}
+.createcourse-head .create-step .active .step-a{
+    border-color: transparent  transparent  transparent  #f8f8f8;
+}
+
+.createcourse-step1,.createcourse-step2,.createcourse-step3{
+    padding:10px 10px;
+    overflow:auto;
+}
+.createcourse-step1{
+}
+.createcourse-step1 input[type="file"]{
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:2;
+    opacity:0;
+}
+.createcourse-step2{
+}
+.createcourse-step3{
+}
+.catalog-list{
+    overflow:auto;
+}
+.catalog-item,.catalog-total,.catalog-add{
+    float:none;
+    display:block;
+    position:relative;
+    overflow:hidden;
+    margin-top:10px;
+}
+.catalog-item .catalog-num1{
+    text-align:center;
+    line-height:40px;
+    float:left;
+    width:70px;
+}
+.catalog-item .catalog-num1 .catalog-num2{
+    height:40px;
+    padding:0px 5px;
+    background-color: rgb(102, 102, 102);
+    color:#ffffff;
+}
+.catalog-item .catalog-num1 .catalog-num2 span.catalog-num{
+    height:100%;
+    width:25px;
+    display:inline-block; 
+}
+.catalog-item .catalog-info{
+    margin-left:70px;
+}
+.catalog-item .catalog-info .catalog-item-head{
+    position:relative;
+    line-height:40px;
+    height:100%;
+    height:40px;
+    padding:0px 10px;
+    color:#000000;
+    background-color: rgb(243, 243, 243);
+}
+.catalog-item .catalog-info .catalog-item-head:hover{
+    background-color: rgb(200, 200, 243);
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-title{
+    float:left;
+    width:85%;
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-title input{
+    height:40px;
+    background:transparent;
+    border-width:0px;
+    width:100%;
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-title input:focus{
+    outline:none;
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-lesson-cmd{
+    position:absolute;
+    top:0px;
+    right:0px;
+    width:15%;
+    cursor:pointer;
+    float:right;
+    visibility:hidden;
+    color:#ff9900;
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-lesson-cmd i{
+    float:right;
+    margin:0px 2px;
+    font-size:20px;
+}
+.catalog-item .catalog-info .catalog-item-head .catalog-lesson-cmd i:hover{
+    color:#ff0000;
+    font-weight:bold;
+}
+.catalog-item .catalog-info .catalog-item-head:hover .catalog-lesson-cmd{
+    visibility:visible;
+}
+.catalog-item .catalog-info .catalog-desc{
+    padding:5px 15px;
+    display:none;
+    border:1px solid rgb(243, 243, 243);
+}
+.catalog-item .catalog-info .show{
+    display:inline;
+}
+.createcourse-tail{
+    height:40px;
+}
